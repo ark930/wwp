@@ -47,14 +47,14 @@ class UserController extends Controller
         $user->ifFirstLogin();
         $user->updateLastLogin();
 
-        return response('', 204);
+        return response('', 200);
     }
 
     public function logout() {
         Session::flush();
         Session::regenerate();
 
-        return response('', 204);
+        return response('', 200);
     }
 
     /**
@@ -89,9 +89,7 @@ class UserController extends Controller
         $verify_code = $user->setVerifyCode();
 
         // 向手机发送验证码短信
-//        $message = "【TGIF 验证】您的验证码是$verify_code";
-//        $SMS->SendSMS($tel, $message);
-        $temp_id = 1579488;
+        $temp_id = 1645222;
         $SMS->SendSMSByTemplate($tel, $temp_id, $verify_code);
 
         return response()->json(['msg' => '验证码已发送至客户端, 请注意查收']);
