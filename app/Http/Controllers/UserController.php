@@ -6,6 +6,7 @@ use App\Contracts\SMSServiceContract;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -93,5 +94,47 @@ class UserController extends Controller
         $SMS->SendSMSByTemplate($tel, $temp_id, $verify_code);
 
         return response()->json(['msg' => '验证码已发送至客户端, 请注意查收']);
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadAvatar(Request $request)
+    {
+        $this->validate($request, [
+            'avatar' => 'required|max:5000',
+        ]);
+
+        $avatar = $request->file('avatar');
+        $filePath = $avatar->store('avatar');
+
+        $user = Auth::user();
+        $user['avatar_url'] = $filePath;
+        $user->save();
+
+        return response()->json($user);
+    }
+
+    /**
+     * 保存用户昵称
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function saveNickname(Request $request)
+    {
+        $this->validate($request, [
+            'nickname' => 'required',
+        ]);
+
+        $nickname = $request->input('nickname');
+        $user = Auth::user();
+        $user['nickname'] = $nickname;
+        $user->save();
+
+        return response()->json($user);
     }
 }
