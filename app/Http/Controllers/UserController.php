@@ -13,66 +13,48 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required|regex:/^1\d{10}$/',
-            'password' => 'required|regex:/^\d{6}$/',
+            'tel' => 'required|regex:/^1\d{10}$/',
+            'verify_code' => 'required|regex:/^\d{4}$/',
         ], [
-            'username.required' => '请填写手机号',
-            'username.regex' => '请填写正确的手机号',
-            'password.required' => '请填写验证码',
-            'password.regex' => '验证码格式不正确',
+            'tel.required' => '请填写手机号',
+            'tel.regex' => '请填写正确的手机号',
+            'verify_code.required' => '请填写验证码',
+            'verify_code.regex' => '验证码格式不正确',
         ]);
 
-        $username = $request->input('username');
-        $password = $request->input('password');
+        $tel = $request->input('tel');
+        $verifyCode = $request->input('verify_code');
 
-        $user = User::where('tel', $username)->first();
+        $user = User::where('tel', $tel)->first();
 
         if(empty($user)) {
-            return redirect()->back()->withErrors('登录失败')->withInput();
+            throw new BadRequestException('登录失败');
         }
 
         if($user->ifVerifyCodeExpired()) {
-            return redirect()->back()->withErrors('验证码过期, 请重新获取')->withInput();
+            throw new BadRequestException('验证码过期, 请重新获取验证码');
         }
 
         if($user->ifVerifyCodeRetryTimesExceed()) {
-            return redirect()->back()->withErrors('验证码输入错误次数过多, 已失效, 请重新获取')->withInput();
+            throw new BadRequestException('验证码输入错误次数过多, 已失效, 请重新获取验证码');
         }
 
-        if($user->ifVerifyCodeWrong($password)) {
-            return redirect()->back()->withErrors('验证码错误')->withInput();
-        }
-
-        // 保存邀请人信息
-        if(Session::has('inviter_id')) {
-            $inviter_id = Session::pull('inviter_id');
-            $inviter = User::find($inviter_id);
-
-            if(!empty($inviter)) {
-                $user->inviter()->associate($inviter);
-                $user->save();
-                $inviter['invite_count'] += 1;
-                $inviter->save();
-            }
+        if($user->ifVerifyCodeWrong($verifyCode)) {
+            throw new BadRequestException('验证码错误');
         }
 
         $user->disableVerifyCode();
         $user->ifFirstLogin();
         $user->updateLastLogin();
 
-        Session::put('user', $user);
-
-        if($user['apply_status'] == 'approve') {
-            return redirect()->route('people');
-        } else {
-            return redirect('apply');
-        }
+        return response('', 204);
     }
 
     public function logout() {
         Session::flush();
         Session::regenerate();
-        return redirect('/login');
+
+        return response('', 204);
     }
 
     /**
