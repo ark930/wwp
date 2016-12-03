@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->longText('content')->nullable();
             $table->enum('status', ['init', 'draft', 'published']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

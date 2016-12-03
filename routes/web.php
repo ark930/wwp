@@ -20,6 +20,10 @@ Route::post('login', 'UserController@login');
 Route::post('logout', 'UserController@logout');
 Route::post('verifycode', 'UserController@verifyCode');
 
-Route::group(['middleware' => ['auth']], function () {
+//Route::group(['middleware' => ['auth']], function () {
     Route::resource('articles', 'ArticleController');
-});
+//});
+
+//Auth::routes();
+
+//Route::get('/home', 'HomeController@index');

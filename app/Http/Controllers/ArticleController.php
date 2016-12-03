@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -46,7 +48,10 @@ class ArticleController extends Controller
         $article['cover_image'] = $coverImage;
         $article['title'] = $title;
         $article['content'] = $content;
-        $article->save();
+
+//        $user = User::find(1);
+        $user = Auth::user();
+        $user->articles()->save($article);
 
         return response()->json($article);
     }
@@ -101,6 +106,7 @@ class ArticleController extends Controller
         $article['cover_image'] = $coverImage;
         $article['title'] = $title;
         $article['content'] = $content;
+        $article['status'] = Article::STATUS_DRAFT;
         $article->save();
 
         return response()->json($article);
@@ -114,8 +120,11 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        Article::find($id)->delete();
+        $article = Article::find($id);
+        if(!empty($article)) {
+            $article->delete();
+        }
 
-        return response(204);
+        return response('', 204);
     }
 }
