@@ -132,6 +132,32 @@ class ArticleController extends Controller
         return response()->json($article);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws BadRequestException
+     */
+    public function uploadCover(Request $request, $id)
+    {
+        $this->validate($request, [
+            'cover_image' => 'required|max:5000',
+        ]);
+
+        $article = Article::find($id);
+        if(empty($article)) {
+            throw new BadRequestException('该文章不存在');
+        }
+
+        $coverImage = $request->file('cover_image');
+        $filePath = $coverImage->store('cover_image');
+
+        $article['cover_image'] = $filePath;
+        $article->save();
+
+        return response()->json($article);
+    }
+
     private function updateArticle(Request $request, $id)
     {
         $article = Article::find($id);

@@ -20,4 +20,9 @@ class Article extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function versions()
+    {
+        return $this->hasMany('App\Models\ArticleVersion');
+    }
 }
