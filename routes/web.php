@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::post('login', 'UserController@login');
+Route::post('logout', 'UserController@logout');
+Route::post('verifycode', 'UserController@verifyCode');
+
+Route::resource('articles', 'ArticleController');
