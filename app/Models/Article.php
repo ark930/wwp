@@ -12,6 +12,10 @@ class Article extends Model
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
+    protected $hidden = [
+        'deleted_at',
+    ];
+
     public function writer()
     {
         return $this->belongsTo('App\Models\User');

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Article list
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,7 +33,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created article
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -57,7 +57,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified article.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -85,7 +85,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified article.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -93,6 +93,46 @@ class ArticleController extends Controller
      * @throws BadRequestException
      */
     public function update(Request $request, $id)
+    {
+        $article = $this->updateArticle($request, $id);
+        $article->save();
+
+        return response()->json($article);
+    }
+
+    /**
+     * Remove the specified article.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $article = Article::find($id);
+        if(!empty($article)) {
+            $article->delete();
+        }
+
+        return response('', 204);
+    }
+
+    /**
+     * Publish the specified article
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function publish(Request $request, $id)
+    {
+        $article = $this->updateArticle($request, $id);
+        $article['status'] = Article::STATUS_PUBLISHED;
+        $article->save();
+
+        return response()->json($article);
+    }
+
+    private function updateArticle(Request $request, $id)
     {
         $article = Article::find($id);
         if(empty($article)) {
@@ -106,25 +146,7 @@ class ArticleController extends Controller
         $article['cover_image'] = $coverImage;
         $article['title'] = $title;
         $article['content'] = $content;
-        $article['status'] = Article::STATUS_DRAFT;
-        $article->save();
 
-        return response()->json($article);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $article = Article::find($id);
-        if(!empty($article)) {
-            $article->delete();
-        }
-
-        return response('', 204);
+        return $article;
     }
 }

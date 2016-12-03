@@ -22,6 +22,7 @@ Route::post('verifycode', 'UserController@verifyCode');
 
 //Route::group(['middleware' => ['auth']], function () {
     Route::resource('articles', 'ArticleController');
+    Route::post('articles/{article_id}/publish', 'ArticleController@publish');
 //});
 
 //Auth::routes();
