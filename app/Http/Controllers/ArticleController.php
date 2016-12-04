@@ -40,12 +40,12 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $coverImage = $request->input('cover_image');
+        $coverImage = $request->input('cover_url');
         $title = $request->input('title');
         $content = $request->input('content');
 
         $article = new Article();
-        $article['cover_image'] = $coverImage;
+        $article['cover_url'] = $coverImage;
         $article['title'] = $title;
         $article['content'] = $content;
 
@@ -141,7 +141,7 @@ class ArticleController extends Controller
     public function uploadCover(Request $request, $id)
     {
         $this->validate($request, [
-            'cover_image' => 'required|max:5000',
+            'cover_url' => 'required|max:5000',
         ]);
 
         $article = Article::find($id);
@@ -149,10 +149,10 @@ class ArticleController extends Controller
             throw new BadRequestException('该文章不存在');
         }
 
-        $coverImage = $request->file('cover_image');
-        $filePath = $coverImage->store('cover_image');
+        $coverImage = $request->file('cover_url');
+        $filePath = $coverImage->store('cover_url');
 
-        $article['cover_image'] = $filePath;
+        $article['cover_url'] = $filePath;
         $article->save();
 
         return response()->json($article);
@@ -165,11 +165,11 @@ class ArticleController extends Controller
             throw new BadRequestException('该文章不存在');
         }
 
-        $coverImage = $request->input('cover_image');
+        $coverImage = $request->input('cover_url');
         $title = $request->input('title');
         $content = $request->input('content');
 
-        $article['cover_image'] = $coverImage;
+        $article['cover_url'] = $coverImage;
         $article['title'] = $title;
         $article['content'] = $content;
 
