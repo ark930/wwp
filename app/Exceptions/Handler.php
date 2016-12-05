@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 
@@ -47,8 +48,10 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof BadRequestException) {
             return response()->json(['error' => $exception->getMessage()], $exception->getCode());
+        } else if ($exception instanceof ModelNotFoundException) {
+            return response()->json(['error' => $exception->getMessage()], $exception->getCode());
         } else if ($exception instanceof TokenMismatchException){
-            return response()->json('会话已过期, 请重新登录');
+            return response()->json(['error' => '会话已过期, 请重新登录', 401]);
         }
 
         return parent::render($request, $exception);
