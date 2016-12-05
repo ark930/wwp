@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
 use App\Models\ArticleVersion;
-use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,12 +46,14 @@ class ArticleController extends Controller
 
         $user = Auth::user();
         $article = new Article();
+        $article['status'] = Article::STATUS_DRAFT;
         $user->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
         $article->versions()->save($articleVersion);
-
+//        $articleVersion->article()->associate($article);
+//        $article->currentVersion()->save($articleVersion);
 
         return response()->json($articleVersion->article);
     }
@@ -117,14 +119,55 @@ class ArticleController extends Controller
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws BadRequestException
      */
     public function publish(Request $request, $id)
     {
         $article = $this->updateArticle($request, $id);
-        $article['status'] = Article::STATUS_PUBLISHED;
-        $article->save();
+        if($article['status'] == Article::STATUS_DRAFT) {
+            $article['status'] = Article::STATUS_PUBLISHED;
+            $article->save();
+            return response()->json($article);
+        }
 
-        return response()->json($article);
+        throw new BadRequestException('操作失败');
+    }
+
+    public function unpublish(Request $request, $id)
+    {
+        $article = $this->updateArticle($request, $id);
+        if($article['status'] == Article::STATUS_PUBLISHED) {
+            $article['status'] = Article::STATUS_DRAFT;
+            $article->save();
+            return response()->json($article);
+        }
+
+        throw new BadRequestException('操作失败');
+    }
+
+    public function trash(Request $request, $id)
+    {
+        $article = $this->updateArticle($request, $id);
+        if($article['status'] == Article::STATUS_DRAFT) {
+            $article['status'] = Article::STATUS_TRASHED;
+            $article->save();
+            return response()->json($article);
+        }
+
+        throw new BadRequestException('操作失败');
+    }
+
+    public function untrash(Request $request, $id)
+    {
+        $article = $this->updateArticle($request, $id);
+        if($article['status'] == Article::STATUS_TRASHED) {
+            $article['status'] = Article::STATUS_DRAFT;
+            $article->save();
+            return response()->json($article);
+        }
+
+        throw new BadRequestException('操作失败');
+
     }
 
     /**
@@ -174,7 +217,7 @@ class ArticleController extends Controller
             ->first();
 
         if(empty($article)) {
-            throw new BadRequestException("Article doesn't exist");
+            throw new ModelNotFoundException("Article doesn't exist");
         }
 
         return $article;

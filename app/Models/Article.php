@@ -12,6 +12,7 @@ class Article extends Model
     const STATUS_INIT = 'init';
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
+    const STATUS_TRASHED = 'trashed';
 
     protected $hidden = [
         'deleted_at',
@@ -25,5 +26,10 @@ class Article extends Model
     public function versions()
     {
         return $this->hasMany('App\Models\ArticleVersion');
+    }
+
+    public function currentVersion()
+    {
+        return $this->hasOne('App\Models\ArticleVersion', 'article_id', 'version_id');
     }
 }

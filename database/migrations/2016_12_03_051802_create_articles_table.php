@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('version_id')->nullable();
-            $table->enum('status', ['init', 'draft', 'published']);
+            $table->enum('status', ['init', 'draft', 'published', 'trashed']);
             $table->timestamps();
             $table->softDeletes();
         });
