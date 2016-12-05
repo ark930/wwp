@@ -14,10 +14,13 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
+        'id',
         'verify_code',
         'verify_code_expire_at',
         'verify_code_refresh_at',
         'verify_code_retry_times',
+        'created_at',
+        'updated_at',
         'deleted_at',
     ];
 
