@@ -68,7 +68,6 @@ class UserController extends Controller
      */
     public function verifyCode(Request $request, SMSServiceContract $SMS)
     {
-
         $this->validate($request, [
             'tel' => 'required|regex:/^1\d{10}$/',
         ], [

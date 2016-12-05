@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
+use App\Models\ArticleVersion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -40,20 +41,19 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $coverImage = $request->input('cover_url');
         $title = $request->input('title');
         $content = $request->input('content');
 
-        $article = new Article();
-        $article['cover_url'] = $coverImage;
-        $article['title'] = $title;
-        $article['content'] = $content;
-
-//        $user = User::find(1);
         $user = Auth::user();
+        $article = new Article();
         $user->articles()->save($article);
+        $articleVersion = new ArticleVersion();
+        $articleVersion['title'] = $title;
+        $articleVersion['content'] = $content;
+        $article->versions()->save($articleVersion);
 
-        return response()->json($article);
+
+        return response()->json($articleVersion->article);
     }
 
     /**
@@ -65,10 +65,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::find($id);
-        if(empty($article)) {
-            throw new BadRequestException('该文章不存在');
-        }
+        $article = $this->findArticle($id);
 
         return response()->json($article);
     }
@@ -81,7 +78,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -108,10 +105,8 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::find($id);
-        if(!empty($article)) {
-            $article->delete();
-        }
+        $article = $this->findArticle($id);
+        $article->delete();
 
         return response('', 204);
     }
@@ -144,34 +139,43 @@ class ArticleController extends Controller
             'cover_url' => 'required|max:5000',
         ]);
 
-        $article = Article::find($id);
-        if(empty($article)) {
-            throw new BadRequestException('该文章不存在');
-        }
+        $article = $this->findArticle($id);
 
         $coverImage = $request->file('cover_url');
         $filePath = $coverImage->store('cover_url');
 
-        $article['cover_url'] = $filePath;
-        $article->save();
+        $articleVersion = new ArticleVersion();
+        $articleVersion['cover_url'] = $filePath;
+        $article->versions()->save($articleVersion);
 
         return response()->json($article);
     }
 
-    private function updateArticle(Request $request, $id)
+    private function updateArticle(Request $request, $id) : Article
     {
-        $article = Article::find($id);
-        if(empty($article)) {
-            throw new BadRequestException('该文章不存在');
-        }
+        $article = $this->findArticle($id);
 
-        $coverImage = $request->input('cover_url');
         $title = $request->input('title');
         $content = $request->input('content');
 
-        $article['cover_url'] = $coverImage;
-        $article['title'] = $title;
-        $article['content'] = $content;
+        $articleVersion = new ArticleVersion();
+        $articleVersion['title'] = $title;
+        $articleVersion['content'] = $content;
+        $article->versions()->save($articleVersion);
+
+        return $article;
+    }
+
+    private function findArticle($articleId) : Article
+    {
+        $user = Auth::user();
+        $article = Article::where('user_id', $user['id'])
+            ->where('id', $articleId)
+            ->first();
+
+        if(empty($article)) {
+            throw new BadRequestException("Article doesn't exist");
+        }
 
         return $article;
     }

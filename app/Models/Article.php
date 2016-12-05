@@ -9,6 +9,7 @@ class Article extends Model
 {
     use SoftDeletes;
 
+    const STATUS_INIT = 'init';
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
