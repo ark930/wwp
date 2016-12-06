@@ -165,7 +165,7 @@ class ArticleTest extends TestCase
 
         $this->actingAs($this->user)
             ->json('DELETE', '/articles/1')
-            ->seeStatusCode(204);
+            ->seeStatusCode(200);
     }
 
     public function testDeleteWithoutAuth()
@@ -183,7 +183,7 @@ class ArticleTest extends TestCase
 
         $this->actingAs($this->user)
             ->json('DELETE', '/articles/1')
-            ->seeStatusCode(204);
+            ->seeStatusCode(200);
 
         $this->json('DELETE', '/articles/1')
             ->seeStatusCode(404)

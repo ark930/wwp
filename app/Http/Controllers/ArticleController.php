@@ -110,7 +110,7 @@ class ArticleController extends Controller
         $article = $this->findArticle($id);
         $article->delete();
 
-        return response('', 204);
+        return response('', 200);
     }
 
     /**
@@ -185,7 +185,7 @@ class ArticleController extends Controller
         $article = $this->findArticle($id);
 
         $coverImage = $request->file('cover_url');
-        $filePath = $coverImage->store('cover_url');
+        $filePath = $coverImage->store('cover');
 
         $articleVersion = new ArticleVersion();
         $articleVersion['cover_url'] = $filePath;
@@ -217,7 +217,7 @@ class ArticleController extends Controller
             ->first();
 
         if(empty($article)) {
-            throw new ModelNotFoundException("Article doesn't exist");
+            throw new ModelNotFoundException("该文章不存在");
         }
 
         return $article;
