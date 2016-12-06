@@ -31,8 +31,9 @@ class ArticleController extends Controller
      *  HTTP/1.1 200 OK
      *  {
      *      "id": 1,
-     *      "user_id": 1,
-     *      "version_id": null,
+     *      "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
+     *      "title": "标题",
+     *      "content": "内容",
      *      "status": "draft",
      *      "created_at": "2016-12-06 07:49:16",
      *      "updated_at": "2016-12-06 07:49:16"

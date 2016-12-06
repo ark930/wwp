@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -54,6 +55,8 @@ class Handler extends ExceptionHandler
             return response()->json(['msg' => '会话已过期, 请重新登录'], 401);
         } else if ($exception instanceof AuthenticationException) {
             return response()->json(['msg' => '未授权'], 401);
+        } else if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->json(['msg' => '无效的访问方式'], 404);
         }
 
         return parent::render($request, $exception);
