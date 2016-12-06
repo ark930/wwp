@@ -103,7 +103,16 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
 
-        return response()->json($articles);
+        $data = [];
+        foreach ($articles as $article) {
+            try {
+                $data[] = $this->filterArticleData($article);
+            } catch (BadRequestException $e) {
+
+            }
+        }
+
+        return response()->json($data);
     }
 
     /**

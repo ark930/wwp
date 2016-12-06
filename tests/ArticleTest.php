@@ -70,9 +70,7 @@ class ArticleTest extends TestCase
         $this->json('GET', '/articles')
             ->seeStatusCode(200)
             ->seeJsonStructure([
-                '*' => [
-                    'id', 'user_id'
-                ]
+                '*' => $this->articleStructure()
             ]);
     }
 
