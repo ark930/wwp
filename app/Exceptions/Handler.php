@@ -52,12 +52,11 @@ class Handler extends ExceptionHandler
             return response()->json(['msg' => '资源不存在'], 404);
         } else if ($exception instanceof TokenMismatchException){
             return response()->json(['msg' => '会话已过期, 请重新登录'], 401);
-        } else {
-            return response()->json(['msg' => '发生了一个错误'], 400);
-
+        } else if ($exception instanceof AuthenticationException) {
+            return response()->json(['msg' => '未授权'], 401);
         }
 
-//        return parent::render($request, $exception);
+        return parent::render($request, $exception);
     }
 
     /**
