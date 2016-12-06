@@ -24,6 +24,31 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
+     * @api {post} /login 用户登录
+     * @apiGroup Users
+     *
+     * @apiParam {String} tel 用户手机号
+     * @apiParam {String} verify_code 验证码
+     *
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     *  {
+     *      "tel": "1801234567",
+     *      "username": "ark",
+     *      "nickname": "Edwin",
+     *      "avatar_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
+     *      "first_login_at": "2016-12-06 03:48:18",
+     *      "last_login_at": "2016-12-06 07:22:31"
+     *  }
+     *
+     * @apiErrorExample Error-Response:
+     *  HTTP/1.1 400 Bad Request
+     *  {
+     *      "msg": "验证码过期, 请重新获取验证码"
+     *  }
+     */
+
+    /**
      * Handle a login request to the application.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -56,6 +81,13 @@ class LoginController extends Controller
         throw new BadRequestException($ret);
     }
 
+    /**
+     * @api {post} /logout 用户登出
+     * @apiGroup Users
+     *
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     */
     /**
      * Log the user out of the application.
      *
