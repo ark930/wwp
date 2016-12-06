@@ -68,7 +68,28 @@ class ArticleController extends Controller
     /**
      * @api {get} /articles 文章列表
      * @apiGroup Articles
-     * @apiUse ArticleObject
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     *  [
+     *      {
+     *          "id": 1,
+     *          "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
+     *          "title": "标题一",
+     *          "content": "内容",
+     *          "status": "draft",
+     *          "created_at": "2016-12-06 07:49:16",
+     *          "updated_at": "2016-12-06 07:49:16"
+     *      },
+     *      {
+     *          "id": 2,
+     *          "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
+     *          "title": "标题二",
+     *          "content": "内容",
+     *          "status": "published",
+     *          "created_at": "2016-12-06 07:49:16",
+     *          "updated_at": "2016-12-06 07:49:16"
+     *      }
+     *  ]
      * @apiUse Unauthorized
      * @apiUse NotFound
      */
