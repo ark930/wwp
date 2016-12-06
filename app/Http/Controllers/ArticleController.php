@@ -149,11 +149,13 @@ class ArticleController extends Controller
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
-        $article->versions()->save($articleVersion);
-//        $articleVersion->article()->associate($article);
-//        $article->currentVersion()->save($articleVersion);
+        $articleVersion->save();
+        $article->draftVersion()->associate($articleVersion);
+        $article->save();
 
-        return response()->json($articleVersion->article);
+        $data = $this->filterArticleData($article);
+
+        return response()->json($data);
     }
 
     /**
@@ -175,8 +177,9 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = $this->findArticle($id);
+        $data = $this->filterArticleData($article);
 
-        return response()->json($article);
+        return response()->json($data);
     }
 
     /**
@@ -218,8 +221,9 @@ class ArticleController extends Controller
     {
         $article = $this->updateArticle($request, $id);
         $article->save();
+        $data = $this->filterArticleData($article);
 
-        return response()->json($article);
+        return response()->json($data);
     }
 
     /**
@@ -268,10 +272,13 @@ class ArticleController extends Controller
     public function publish(Request $request, $id)
     {
         $article = $this->updateArticle($request, $id);
-        if($article['status'] == Article::STATUS_DRAFT) {
+        if($article['status'] == Article::STATUS_DRAFT
+            || $article['status'] == Article::STATUS_PUBLISHED_WITH_DRAFT) {
             $article['status'] = Article::STATUS_PUBLISHED;
             $article->save();
-            return response()->json($article);
+            $data = $this->filterArticleData($article);
+
+            return response()->json($data);
         }
 
         throw new BadRequestException('操作失败');
@@ -291,7 +298,9 @@ class ArticleController extends Controller
         if($article['status'] == Article::STATUS_PUBLISHED) {
             $article['status'] = Article::STATUS_DRAFT;
             $article->save();
-            return response()->json($article);
+            $data = $this->filterArticleData($article);
+
+            return response()->json($data);
         }
 
         throw new BadRequestException('操作失败');
@@ -311,7 +320,9 @@ class ArticleController extends Controller
         if($article['status'] == Article::STATUS_DRAFT) {
             $article['status'] = Article::STATUS_TRASHED;
             $article->save();
-            return response()->json($article);
+            $data = $this->filterArticleData($article);
+
+            return response()->json($data);
         }
 
         throw new BadRequestException('操作失败');
@@ -331,7 +342,9 @@ class ArticleController extends Controller
         if($article['status'] == Article::STATUS_TRASHED) {
             $article['status'] = Article::STATUS_DRAFT;
             $article->save();
-            return response()->json($article);
+            $data = $this->filterArticleData($article);
+
+            return response()->json($data);
         }
 
         throw new BadRequestException('操作失败');
@@ -384,7 +397,13 @@ class ArticleController extends Controller
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
-        $article->versions()->save($articleVersion);
+
+        $status = $article['status'];
+        if($status === Article::STATUS_PUBLISHED) {
+            $article['status'] = Article::STATUS_PUBLISHED_WITH_DRAFT;
+        }
+        $article->draftVersion()->associate($articleVersion);
+        $article->save();
 
         return $article;
     }
@@ -401,5 +420,32 @@ class ArticleController extends Controller
         }
 
         return $article;
+    }
+
+    private function filterArticleData(Article $article)
+    {
+        $status = $article['status'];
+
+        if($status === Article::STATUS_DRAFT) {
+            $version = $article->draftVersion;
+        } else if($status === Article::STATUS_DRAFT) {
+            $version = $article->publishedVersion;
+        }
+
+        if(empty($version)) {
+            throw new BadRequestException('文章版本不存在');
+        }
+
+        $data = [
+            'id' => $article['id'],
+            'cover_url' => $article['cover_url'],
+            'title' => $version['title'],
+            'content' => $version['content'],
+            'status' => $article['status'],
+            'created_at' => strval($article['created_at']),
+            'updated_at' => strval($article['updated_at']),
+        ];
+
+        return $data;
     }
 }

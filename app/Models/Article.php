@@ -9,9 +9,9 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    const STATUS_INIT = 'init';
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
+    const STATUS_PUBLISHED_WITH_DRAFT = 'published_with_draft';
     const STATUS_TRASHED = 'trashed';
 
     protected $hidden = [
@@ -23,13 +23,18 @@ class Article extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function versions()
+//    public function versions()
+//    {
+//        return $this->hasMany('App\Models\ArticleVersion');
+//    }
+
+    public function publishedVersion()
     {
-        return $this->hasMany('App\Models\ArticleVersion');
+        return $this->belongsTo('App\Models\ArticleVersion', 'publish_version_id');
     }
 
-    public function currentVersion()
+    public function draftVersion()
     {
-        return $this->hasOne('App\Models\ArticleVersion', 'article_id', 'version_id');
+        return $this->belongsTo('App\Models\ArticleVersion', 'draft_version_id');
     }
 }

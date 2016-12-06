@@ -53,7 +53,7 @@ class ArticleTest extends TestCase
     {
         $this->storeApi()
             ->seeStatusCode(200)
-            ->seeJson(['user_id' => $this->user['id']]);
+            ->seeJsonStructure($this->articleStructure());
     }
 
     public function testStoreWithoutAuth()
@@ -86,9 +86,6 @@ class ArticleTest extends TestCase
             ->seeStatusCode(401);
     }
 
-    /**
-     * @depends testStore
-     */
     public function testShow()
     {
         $this->storeApi();
@@ -96,7 +93,7 @@ class ArticleTest extends TestCase
         $this->actingAs($this->user)
             ->json('GET', '/articles/1')
             ->seeStatusCode(200)
-            ->seeJson(['id' => 1,]);
+            ->seeJsonStructure($this->articleStructure());
     }
 
     public function testShowWithoutAuth()
@@ -118,9 +115,6 @@ class ArticleTest extends TestCase
             ->seeJsonStructure(['msg']);
     }
 
-    /**
-     * @depends testStore
-     */
     public function testUpdate()
     {
         $this->storeApi();
@@ -130,7 +124,7 @@ class ArticleTest extends TestCase
                 'title' => 'test'
             ])
             ->seeStatusCode(200)
-            ->seeJson(['id' => 1,]);
+            ->seeJsonStructure($this->articleStructure());
     }
 
     public function testUpdateWithoutAuth()
@@ -156,9 +150,6 @@ class ArticleTest extends TestCase
             ->seeJsonStructure(['msg']);
     }
 
-    /**
-     * @depends testStore
-     */
     public function testDelete()
     {
         $this->storeApi();
@@ -218,5 +209,12 @@ class ArticleTest extends TestCase
         }
 
         return $this->json('POST', '/articles', $data);
+    }
+
+    private function articleStructure()
+    {
+        return [
+            'id', 'cover_url', 'title', 'content', 'status', 'created_at', 'updated_at',
+        ];
     }
 }
