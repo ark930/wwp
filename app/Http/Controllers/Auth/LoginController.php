@@ -29,6 +29,11 @@ class LoginController extends Controller
      *
      * @apiParam {String{11}} tel 用户手机号
      * @apiParam {String{4}} verify_code 验证码
+     * @apiParamExample {json} Request-Example:
+     * {
+     *      "tel": "18012345678",
+     *      "verify_code": "1234"
+     * }
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK

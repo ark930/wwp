@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    throw new \Illuminate\Auth\AuthenticationException();
 });
 
 

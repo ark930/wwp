@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\SMSServiceContract;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,10 @@ class UserController extends Controller
      * @apiGroup Users
      *
      * @apiParam {String{11}} tel 用户手机号
+     * @apiParamExample {json} Request-Example:
+     * {
+     *      "tel": "18012345678",
+     * }
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK

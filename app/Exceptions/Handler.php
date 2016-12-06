@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
         } else if ($exception instanceof ModelNotFoundException) {
             return response()->json(['msg' => '资源不存在'], 404);
         } else if ($exception instanceof TokenMismatchException){
-            return response()->json(['msg' => '会话已过期, 请重新登录', 401]);
+            return response()->json(['msg' => '会话已过期, 请重新登录'], 401);
         }
 
         return parent::render($request, $exception);
@@ -66,10 +66,11 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson()) {
-            return response()->json(['msg' => '未授权'], 401);
-        }
-
-        return redirect()->guest('login');
+//        if ($request->expectsJson()) {
+//            return response()->json(['msg' => '未授权'], 401);
+//        }
+//
+//        return redirect()->guest('login');
+        return response()->json(['msg' => '未授权'], 401);
     }
 }
