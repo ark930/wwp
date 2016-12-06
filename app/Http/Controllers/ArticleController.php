@@ -55,6 +55,11 @@ class ArticleController extends Controller
      *  {
      *      "msg": "未授权"
      *  }
+     *
+     *  HTTP/1.1 401 Unauthorized
+     *  {
+     *      "msg": "会话已过期, 请重新登录"
+     *  }
      */
 
 
