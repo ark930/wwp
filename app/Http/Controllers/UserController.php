@@ -14,7 +14,7 @@ class UserController extends Controller
      * @api {post} /verifycode 获取验证码
      * @apiGroup Users
      *
-     * @apiParam {String} tel 用户手机号
+     * @apiParam {String{11}} tel 用户手机号
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK

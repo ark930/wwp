@@ -27,8 +27,8 @@ class LoginController extends Controller
      * @api {post} /login 用户登录
      * @apiGroup Users
      *
-     * @apiParam {String} tel 用户手机号
-     * @apiParam {String} verify_code 验证码
+     * @apiParam {String{11}} tel 用户手机号
+     * @apiParam {String{4}} verify_code 验证码
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK

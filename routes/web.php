@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('articles/{article_id}/unpublish', 'ArticleController@unpublish');
     Route::post('articles/{article_id}/trash', 'ArticleController@trash');
     Route::post('articles/{article_id}/untrash', 'ArticleController@untrash');
-    Route::post('articles/{article_id}/cover', 'UserController@uploadCover');
+    Route::post('articles/{article_id}/cover', 'ArticleController@uploadCover');
 
     Route::post('user/avatar', 'UserController@uploadAvatar');
     Route::post('user/nickname', 'UserController@saveNickname');
