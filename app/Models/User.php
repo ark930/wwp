@@ -19,6 +19,7 @@ class User extends Authenticatable
         'verify_code_expire_at',
         'verify_code_refresh_at',
         'verify_code_retry_times',
+        'remember_token',
         'created_at',
         'updated_at',
         'deleted_at',

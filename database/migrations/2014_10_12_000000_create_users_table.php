@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('verify_code_expire_at')->nullable();
             $table->timestamp('verify_code_refresh_at')->nullable();
             $table->unsignedInteger('verify_code_retry_times')->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

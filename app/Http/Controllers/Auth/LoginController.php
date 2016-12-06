@@ -70,7 +70,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return response('', 204);
+        return response('', 200);
     }
 
     /**
