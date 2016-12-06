@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof BadRequestException) {
             return response()->json(['msg' => $exception->getMessage()], $exception->getCode());
         } else if ($exception instanceof ModelNotFoundException) {
-            return response()->json(['msg' => $exception->getMessage()], 404);
+            return response()->json(['msg' => '资源不存在'], 404);
         } else if ($exception instanceof TokenMismatchException){
             return response()->json(['msg' => '会话已过期, 请重新登录', 401]);
         }

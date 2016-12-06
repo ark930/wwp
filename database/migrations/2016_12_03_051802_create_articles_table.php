@@ -16,7 +16,8 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function(Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('version_id')->nullable();
+            $table->unsignedInteger('publish_version_id')->nullable();
+            $table->unsignedInteger('draft_version_id')->nullable();
             $table->enum('status', ['init', 'draft', 'published', 'trashed']);
             $table->timestamps();
             $table->softDeletes();
