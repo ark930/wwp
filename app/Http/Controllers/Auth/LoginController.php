@@ -88,6 +88,7 @@ class LoginController extends Controller
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
      */
+
     /**
      * Log the user out of the application.
      *

@@ -7,10 +7,25 @@ use App\Exceptions\BadRequestException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+    /**
+     * @api {post} /verifycode 获取验证码
+     * @apiGroup Users
+     *
+     * @apiParam {String} tel 用户手机号
+     *
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     *
+     * @apiErrorExample Error-Response:
+     *  HTTP/1.1 400 Bad Request
+     *  {
+     *      "msg": "请求过于频繁, 请在 120 秒后重新请求"
+     *  }
+     */
+
     /**
      * 获取登录验证码
      *
@@ -45,7 +60,7 @@ class UserController extends Controller
         $temp_id = 1645222;
         $SMS->SendSMSByTemplate($tel, $temp_id, $verify_code);
 
-        return response()->json(['msg' => '验证码已发送至客户端, 请注意查收']);
+        return response('', 200);
     }
 
     /**
