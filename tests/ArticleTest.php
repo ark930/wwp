@@ -114,8 +114,8 @@ class ArticleTest extends TestCase
 
         $this->actingAs($this->user)
             ->json('GET', '/articles/2')
-            ->seeStatusCode(400)
-            ->seeJsonStructure(['error']);
+            ->seeStatusCode(404)
+            ->seeJsonStructure(['msg']);
     }
 
     /**
@@ -152,8 +152,8 @@ class ArticleTest extends TestCase
             ->json('PUT', '/articles/2', [
                 'title' => 'test'
             ])
-            ->seeStatusCode(400)
-            ->seeJsonStructure(['error']);
+            ->seeStatusCode(404)
+            ->seeJsonStructure(['msg']);
     }
 
     /**
@@ -186,12 +186,12 @@ class ArticleTest extends TestCase
             ->seeStatusCode(204);
 
         $this->json('DELETE', '/articles/1')
-            ->seeStatusCode(400)
-            ->seeJsonStructure(['error']);
+            ->seeStatusCode(404)
+            ->seeJsonStructure(['msg']);
 
         $this->json('DELETE', '/articles/2')
-            ->seeStatusCode(400)
-            ->seeJsonStructure(['error']);
+            ->seeStatusCode(404)
+            ->seeJsonStructure(['msg']);
     }
 
     protected function storeWithAuth(array $data = [])
