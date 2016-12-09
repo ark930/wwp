@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserController extends Controller
 {
@@ -60,6 +61,12 @@ class UserController extends Controller
         }
 
         $verify_code = $user->setVerifyCode();
+
+        if(app()->environment() == 'local') {
+            return response([
+                'verify_code' => $verify_code
+            ], 200);
+        }
 
         // 向手机发送验证码短信
         $temp_id = 1645222;
