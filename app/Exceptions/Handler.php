@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
@@ -57,6 +58,11 @@ class Handler extends ExceptionHandler
             return response()->json(['msg' => '未授权'], 401);
         } else if ($exception instanceof MethodNotAllowedHttpException) {
             return response()->json(['msg' => '无效的访问方式'], 404);
+        } else if($exception instanceof ValidationException) {
+            $errors = [
+                'params' => $exception->getResponse()->getData(),
+            ];
+            return response()->json(array_merge(['msg' => '参数验证失败'], (array)$errors), 422);
         }
 
         return parent::render($request, $exception);

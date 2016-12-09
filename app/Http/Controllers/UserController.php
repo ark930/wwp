@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Contracts\SMSServiceContract;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserController extends Controller
 {
@@ -45,8 +43,8 @@ class UserController extends Controller
         $this->validate($request, [
             'tel' => 'required|regex:/^1\d{10}$/',
         ], [
-            'tel.required' => '请填写手机号',
-            'tel.regex' => '请填写正确的手机号',
+//            'tel.required' => '请填写手机号',
+//            'tel.regex' => '请填写正确的手机号',
         ]);
 
         $tel = $request->input('tel');

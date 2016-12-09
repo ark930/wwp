@@ -123,10 +123,10 @@ class LoginController extends Controller
             'tel' => 'required|regex:/^1\d{10}$/',
             'verify_code' => 'required|regex:/^\d{4}$/',
         ], [
-            'tel.required' => '请填写手机号',
-            'tel.regex' => '请填写正确的手机号',
-            'verify_code.required' => '请填写验证码',
-            'verify_code.regex' => '验证码格式不正确',
+//            'tel.required' => '请填写手机号',
+//            'tel.regex' => '请填写正确的手机号',
+//            'verify_code.required' => '请填写验证码',
+//            'verify_code.regex' => '验证码格式不正确',
         ]);
     }
 
