@@ -88,10 +88,10 @@ class UserController extends Controller
         ]);
 
         $avatar = $request->file('avatar');
-        $filePath = $avatar->store('avatar');
+        $filePath = $avatar->store('img/avatar');
 
         $user = Auth::user();
-        $user['avatar_url'] = $filePath;
+        $user['avatar_url'] = $request->getSchemeAndHttpHost() . '/' . $filePath;
         $user->save();
 
         return response()->json($user);

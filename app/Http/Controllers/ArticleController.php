@@ -387,13 +387,17 @@ class ArticleController extends Controller
         $article = $this->findArticle($id);
 
         $coverImage = $request->file('cover');
-        $filePath = $coverImage->store('cover');
+        $filePath = $coverImage->store('img/cover');
 
         $articleVersion = new ArticleVersion();
-        $articleVersion['cover_url'] = $filePath;
-        $article->versions()->save($articleVersion);
+        $articleVersion['cover_url'] = $request->getSchemeAndHttpHost() . '/' . $filePath;
+        $articleVersion->save();
+        $article->draftVersion()->associate($articleVersion);
+        $article->save();
 
-        return response()->json($article);
+        $data = $this->filterArticleData($article);
+
+        return response()->json($data);
     }
 
     private function updateArticle(Request $request, $id) : Article
@@ -447,7 +451,7 @@ class ArticleController extends Controller
 
         $data = [
             'id' => $article['id'],
-            'cover_url' => $article['cover_url'],
+            'cover_url' => $version['cover_url'],
             'title' => $version['title'],
             'content' => $version['content'],
             'status' => $article['status'],
