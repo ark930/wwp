@@ -28,6 +28,7 @@ class UserController extends Controller
      *  {
      *      "msg": "请求过于频繁, 请在 120 秒后重新请求"
      *  }
+     * @apiUse UnprocessableEntity
      */
 
     /**

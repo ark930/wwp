@@ -51,6 +51,7 @@ class LoginController extends Controller
      *  {
      *      "msg": "验证码过期, 请重新获取验证码"
      *  }
+     * @apiUse UnprocessableEntity
      */
 
     /**

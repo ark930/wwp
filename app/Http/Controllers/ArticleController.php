@@ -63,7 +63,19 @@ class ArticleController extends Controller
      *  }
      */
 
-
+    /**
+     * @apiDefine UnprocessableEntity
+     * @apiErrorExample {json} Unprocessable-Entiry-Response
+     * HTTP/1.1 422 Unprocessable Entity
+     *  {
+     *      "msg": "参数验证失败",
+     *      "params":{
+     *          "tel":[
+     *              "The xxx field is required."
+     *          ]
+     *      }
+     *  }
+     */
 
     /**
      * @api {get} /articles 文章列表
@@ -138,6 +150,7 @@ class ArticleController extends Controller
      * @apiUse ArticleObject
      * @apiUse Unauthorized
      * @apiUse NotFound
+     * @apiUse UnprocessableEntity
      */
 
     /**
@@ -216,6 +229,7 @@ class ArticleController extends Controller
      * @apiUse ArticleObject
      * @apiUse Unauthorized
      * @apiUse NotFound
+     * @apiUse UnprocessableEntity
      */
 
     /**
@@ -368,6 +382,7 @@ class ArticleController extends Controller
      * @apiUse ArticleObject
      * @apiUse Unauthorized
      * @apiUse NotFound
+     * @apiUse UnprocessableEntity
      */
 
     /**
