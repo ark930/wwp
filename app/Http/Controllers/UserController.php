@@ -115,4 +115,9 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+    public function uc(Request $request)
+    {
+        return $request->header('user-agent');
+    }
 }
