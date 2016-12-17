@@ -34,6 +34,7 @@ class ArticleController extends Controller
      *      "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
      *      "title": "标题",
      *      "content": "内容",
+     *      "read_time": 2,
      *      "status": "draft",
      *      "created_at": "2016-12-06 07:49:16",
      *      "updated_at": "2016-12-06 07:49:16"
@@ -88,6 +89,7 @@ class ArticleController extends Controller
      *          "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
      *          "title": "标题一",
      *          "content": "内容",
+     *          "read_time": 5,
      *          "status": "draft",
      *          "created_at": "2016-12-06 07:49:16",
      *          "updated_at": "2016-12-06 07:49:16"
@@ -97,6 +99,7 @@ class ArticleController extends Controller
      *          "cover_url": "http://whitewrite.press/img/avatar/105ac9f2700b67b28bc1febd7e83ea55.png",
      *          "title": "标题二",
      *          "content": "内容",
+     *          "read_time": 10,
      *          "status": "published",
      *          "created_at": "2016-12-06 07:49:16",
      *          "updated_at": "2016-12-06 07:49:16"
@@ -456,7 +459,7 @@ class ArticleController extends Controller
 
         if($status === Article::STATUS_DRAFT) {
             $version = $article->draftVersion;
-        } else if($status === Article::STATUS_DRAFT) {
+        } else if($status === Article::STATUS_PUBLISHED) {
             $version = $article->publishedVersion;
         }
 
@@ -469,11 +472,19 @@ class ArticleController extends Controller
             'cover_url' => $version['cover_url'],
             'title' => $version['title'],
             'content' => $version['content'],
+            'read_time' => $this->readTime($version['content']),
             'status' => $article['status'],
             'created_at' => strval($article['created_at']),
             'updated_at' => strval($article['updated_at']),
         ];
 
         return $data;
+    }
+
+    private function readTime($content)
+    {
+        $count = mb_strlen($content, 'UTF-8');
+
+        return ceil($count / 500);
     }
 }
