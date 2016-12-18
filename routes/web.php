@@ -31,6 +31,11 @@ Route::group(['middleware' => ['cors']], function() {
 
         Route::post('user/avatar', 'UserController@uploadAvatar');
         Route::post('user/nickname', 'UserController@saveNickname');
+
+        Route::get('comments/{comment_id}', 'CommentController@show');
+        Route::post('comments', 'CommentController@store');
+        Route::put('comments/{comment_id}', 'CommentController@update');
+        Route::destroy('comments/{comment_id}', 'CommentController@delete');
     });
 
 //Auth::routes();
