@@ -11,27 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
-     * @api {post} /verifycode 获取验证码
-     * @apiGroup Users
-     *
-     * @apiParam {String{11}} tel 用户手机号
-     * @apiParamExample {json} Request-Example:
-     * {
-     *      "tel": "18012345678",
-     * }
-     *
-     * @apiSuccessExample Success-Response:
-     *  HTTP/1.1 200 OK
-     *
-     * @apiErrorExample Error-Response:
-     *  HTTP/1.1 400 Bad Request
-     *  {
-     *      "msg": "请求过于频繁, 请在 120 秒后重新请求"
-     *  }
-     * @apiUse UnprocessableEntity
-     */
-
-    /**
      * 获取登录验证码
      *
      * @param Request $request

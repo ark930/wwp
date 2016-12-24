@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function show($id)
+    public function index($id)
     {
         $comment = Comment::findOrFail($id);
 
@@ -23,13 +23,12 @@ class CommentController extends Controller
         $content = $request->input('comment');
 
         $comment = new Comment();
+        $comment['user_id'] = $user['id'];
         $comment['article_id'] = $articleId;
         $comment['comment'] = $content;
-        $comment->associate($user);
         $comment->save();
 
         return response($comment, 200);
-
     }
 
     public function update(Request $request, $id)
@@ -41,7 +40,17 @@ class CommentController extends Controller
         $comment->save();
 
         return response($comment, 200);
+    }
 
+    public function reply(Request $request, $id)
+    {
+        $content = $request->input('reply');
+
+        $comment = Comment::findOrFail($id);
+        $comment['reply'] = $content;
+        $comment->save();
+
+        return response($comment, 200);
     }
 
     public function destroy($id)

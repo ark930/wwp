@@ -17,8 +17,8 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('chapter_id');
-            $table->unsignedInteger('target_id')->nullable();
-            $table->text('comment');
+            $table->text('comment')->comment('读者评论');
+            $table->text('replay')->comment('作者回复')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
