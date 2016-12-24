@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Comment;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,11 +24,13 @@ class CommentController extends Controller
         $articleId = $request->input('article_id');
         $content = $request->input('comment');
 
+        $article = Article::findOrFail($articleId);
+
         $comment = new Comment();
         $comment['user_id'] = $user['id'];
-        $comment['article_id'] = $articleId;
         $comment['comment'] = $content;
-        $comment->save();
+
+        $article->comments()->save($comment);
 
         return response($comment, 200);
     }
@@ -44,11 +48,22 @@ class CommentController extends Controller
 
     public function reply(Request $request, $id)
     {
+        $user = Auth::user();
+
         $content = $request->input('reply');
 
         $comment = Comment::findOrFail($id);
+        $article = $comment->article;
+        $writer = $article->writer;
+
+        if($user['id'] != $writer['id']) {
+            throw new AuthenticationException();
+        }
+
         $comment['reply'] = $content;
         $comment->save();
+
+        $comment = Comment::findOrFail($id);
 
         return response($comment, 200);
     }
@@ -58,6 +73,6 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
         $comment->delete();
 
-        return response('', 200);
+        return response('', 204);
     }
 }

@@ -20,13 +20,14 @@ class Article extends Model
 
     public function writer()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
     }
+
 //    public function versions()
 //    {
 //        return $this->hasMany('App\Models\ArticleVersion');

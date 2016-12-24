@@ -28,14 +28,15 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('articles/{article_id}/trash', 'ArticleController@trash');
         Route::post('articles/{article_id}/untrash', 'ArticleController@untrash');
         Route::post('articles/{article_id}/cover', 'ArticleController@uploadCover');
+        Route::get('articles/{article_id}/comments', 'ArticleController@comments');
 
         Route::post('user/avatar', 'UserController@uploadAvatar');
         Route::post('user/nickname', 'UserController@saveNickname');
 
-        Route::get('comments/{comment_id}', 'CommentController@show');
         Route::post('comments', 'CommentController@store');
         Route::put('comments/{comment_id}', 'CommentController@update');
-        Route::destroy('comments/{comment_id}', 'CommentController@delete');
+        Route::delete('comments/{comment_id}', 'CommentController@destroy');
+        Route::post('comments/{comment_id}/reply', 'CommentController@reply');
     });
 
 //Auth::routes();

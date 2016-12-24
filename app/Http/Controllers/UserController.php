@@ -50,7 +50,7 @@ class UserController extends Controller
         $temp_id = 1645222;
         $SMS->SendSMSByTemplate($tel, $temp_id, $verify_code);
 
-        return response('', 200);
+        return response('', 204);
     }
 
     /**

@@ -9,6 +9,10 @@ class Comment extends Model
 {
     use SoftDeletes;
 
+    protected $hidden = [
+        'deleted_at',
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');

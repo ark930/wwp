@@ -224,6 +224,19 @@ class ArticleController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * 获取文章所有评论
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function comments($id)
+    {
+        $article = Article::findOrFail($id);
+
+        return response()->json($article->comments, 200);
+    }
+
     private function updateArticle(Request $request, $id) : Article
     {
         $article = $this->findArticle($id);
