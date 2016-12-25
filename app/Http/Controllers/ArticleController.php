@@ -138,11 +138,19 @@ class ArticleController extends Controller
      */
     public function publish(Request $request, $id)
     {
-        $article = $this->updateArticle($request, $id);
-        if($article['status'] == Article::STATUS_DRAFT
-            || $article['status'] == Article::STATUS_PUBLISHED_WITH_DRAFT) {
+//        $article = $this->updateArticle($request, $id);
+        $article = Article::findOrFail($id);
+
+        if($article['status'] === Article::STATUS_DRAFT
+            || $article['status'] === Article::STATUS_PUBLISHED_WITH_DRAFT) {
+
+            if($article['status'] === Article::STATUS_DRAFT) {
+                $article['publish_version_id'] = $article['draft_version_id'];
+                $article['draft_version_id'] = null;
+            }
             $article['status'] = Article::STATUS_PUBLISHED;
             $article->save();
+
             $data = $this->filterArticleData($article);
 
             return response()->json($data);
