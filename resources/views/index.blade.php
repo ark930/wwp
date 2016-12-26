@@ -80,7 +80,7 @@
     </div>
 </div>
 <div id="_tl_alerts" class="tl_alerts"></div>
-<script>var T = {"apiUrl": "http:\/\/wwp.me:8000", "datetime": 0, "pageId": 0};
+<script>var T = {"apiUrl": "{{ \Illuminate\Support\Facades\URL::to('/') }}", "datetime": 0, "pageId": 0};
     (function () {
         var a = document.querySelector('time');
         if (a && T.datetime)try {
