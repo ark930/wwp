@@ -12,7 +12,7 @@
 */
 
 Route::group(['middleware' => ['cors']], function() {
-    Route::get('/', function () {
+    Route::get('/version', function () {
         throw new \Illuminate\Auth\AuthenticationException();
     });
 
@@ -48,6 +48,7 @@ Route::group(['middleware' => ['cors']], function() {
 
 
 Route::get('/tp', 'HomeController@tp');
+Route::get('/', 'HomeController@tp');
 Route::post('/check', 'HomeController@check');
 Route::post('/save', 'HomeController@save');
 

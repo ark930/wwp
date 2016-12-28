@@ -14,11 +14,11 @@
     <meta property="og:description"
           content="Telegra.ph is a minimalist publishing tool that allows you to create richly formatted posts and push them to the Web in just a click. Telegraph posts also get beautiful Instant View pages on Telegram.">
     <meta property="og:image" content="http://telegra.ph/images/logo.png">
-    <link rel="shortcut icon" href="/favicon.ico?1" type="image/x-icon">
-    <link rel="icon" type="image/png" href="/images/favicon.png?1" sizes="16x16">
-    <link rel="icon" type="image/png" href="/images/favicon_2x.png?1" sizes="32x32">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" href="/images/favicon.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/images/favicon_2x.png" sizes="32x32">
     <link href="/css/quill.core.min.css" rel="stylesheet">
-    <link href="/css/core.min.css?37" rel="stylesheet">
+    <link href="/css/core.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="tl_page_wrap">
@@ -96,8 +96,8 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.selection.min.js"></script>
 <script src="/js/autosize.min.js"></script>
-<script src="/js/load-image.all.min.js?1"></script>
-<script src="/js/quill.min.js?7"></script>
-<script src="/js/core.min.js?44"></script>
+<script src="/js/load-image.all.min.js"></script>
+<script src="/js/quill.min.js"></script>
+<script src="/js/core.min.js"></script>
 
 </body>
