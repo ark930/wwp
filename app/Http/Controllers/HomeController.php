@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -29,6 +31,26 @@ class HomeController extends Controller
     public function tp()
     {
         return view('index');
+    }
+
+    public function tp2()
+    {
+        $user = Auth::user();
+        if(empty($user)) {
+            $user = User::create([
+                'tel' => str_random(10),
+            ]);
+
+            Auth::guard()->login($user);
+        }
+
+        return view('tp', [
+            'title' => 'Title',
+            'author' => 'Author',
+            'content' => '',
+            'updated_at' => '',
+            'show_edit_button' => 'true'
+        ]);
     }
 
     public function check()

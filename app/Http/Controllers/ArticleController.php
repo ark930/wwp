@@ -54,10 +54,12 @@ class ArticleController extends Controller
     {
         $title = $request->input('title');
         $content = $request->input('content');
+        $author = $request->input('author');
 
         $user = Auth::user();
         $article = new Article();
         $article['status'] = Article::STATUS_DRAFT;
+        $article['author'] = $author;
         $user->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
@@ -67,6 +69,8 @@ class ArticleController extends Controller
         $article->save();
 
         $data = $this->filterArticleData($article);
+//        $data['show_url'] = '/p/' . $data['title'] . '-' . date('Y-m-d', strtotime($data['created_at']));
+        $data['show_url'] = '/p/' . $data['id'];
 
         return response()->json($data);
     }
@@ -245,6 +249,15 @@ class ArticleController extends Controller
         return response()->json($article->comments, 200);
     }
 
+    public function read($id)
+    {
+        $article = $this->findArticle($id);
+        $data = $this->filterArticleData($article);
+
+        $data['show_edit_button'] = 'false';
+        return view('tp', $data);
+    }
+
     private function updateArticle(Request $request, $id) : Article
     {
         $article = $this->findArticle($id);
@@ -296,6 +309,7 @@ class ArticleController extends Controller
 
         $data = [
             'id' => $article['id'],
+            'author' => $article['author'],
             'cover_url' => $version['cover_url'],
             'title' => $version['title'],
             'content' => $version['content'],

@@ -21,7 +21,7 @@ Route::group(['middleware' => ['cors']], function() {
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::post('verifycode', 'UserController@verifyCode');
 
-    Route::group(['middleware' => ['auth']], function () {
+//    Route::group(['middleware' => ['auth']], function () {
         Route::resource('articles', 'ArticleController');
         Route::post('articles/{article_id}/publish', 'ArticleController@publish');
         Route::post('articles/{article_id}/unpublish', 'ArticleController@unpublish');
@@ -37,7 +37,8 @@ Route::group(['middleware' => ['cors']], function() {
         Route::put('comments/{comment_id}', 'CommentController@update');
         Route::delete('comments/{comment_id}', 'CommentController@destroy');
         Route::post('comments/{comment_id}/reply', 'CommentController@reply');
-    });
+
+//    });
 
 //Auth::routes();
 
@@ -47,8 +48,13 @@ Route::group(['middleware' => ['cors']], function() {
 });
 
 
-Route::get('/tp', 'HomeController@tp');
+//Route::get('/tp', 'HomeController@tp');
+Route::get('/tp', 'HomeController@tp2');
 Route::get('/', 'HomeController@tp');
 Route::post('/check', 'HomeController@check');
 Route::post('/save', 'HomeController@save');
+Route::get('/test', function() {
+    return view('home');
+});
 
+Route::get('p/{name}', 'ArticleController@read');

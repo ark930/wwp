@@ -27,8 +27,8 @@
             <header class="tl_article_header">
                 <h1></h1>
                 <address>
-                    <a rel="author"></a><!--
-           -->
+                    <a rel="author"></a>
+
                     <time datetime=""></time>
                 </address>
             </header>
@@ -42,16 +42,16 @@
                 <div id="_tl_tooltip" class="tl_tooltip">
                     <div class="buttons">
                         <span class="button_hover"></span>
-                        <span class="button_group"><!--
-             --><button id="_bold_button"></button><!--
-             --><button id="_italic_button"></button><!--
-             --><button id="_link_button"></button><!--
-           --></span><!--
-           --><span class="button_group"><!--
-             --><button id="_header_button"></button><!--
-             --><button id="_subheader_button"></button><!--
-             --><button id="_quote_button"></button><!--
-           --></span>
+                        <span class="button_group">
+                         <button id="_bold_button"></button>
+                         <button id="_italic_button"></button>
+                         <button id="_link_button"></button>
+                        </span>
+                        <span class="button_group">
+                         <button id="_header_button"></button>
+                         <button id="_subheader_button"></button>
+                         <button id="_quote_button"></button>
+                       </span>
                     </div>
                     <div class="prompt">
                         <span class="close"></span>
@@ -60,8 +60,8 @@
                 </div>
                 <div id="_tl_blocks" class="tl_blocks" style="top: 90px;">
                     <div class="buttons">
-                        <button id="_image_button"></button><!--
-           -->
+                        <button id="_image_button"></button>
+
                         <button id="_embed_button"></button>
                     </div>
                 </div>
@@ -70,8 +70,8 @@
 
             <aside class="tl_article_buttons">
                 <div class="account account_top"></div>
-                <button id="_edit_button" class="button edit_button">Edit</button><!--
-         -->
+                <button id="_edit_button" class="button edit_button">Edit</button>
+
                 <button id="_publish_button" class="button publish_button">Publish</button>
                 <div class="account account_bottom"></div>
                 <div id="_error_msg" class="error_msg"></div>
