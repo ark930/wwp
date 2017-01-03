@@ -255,6 +255,7 @@ class ArticleController extends Controller
         $data = $this->filterArticleData($article);
 
         $data['show_edit_button'] = 'false';
+        $data['is_read_only'] = 'true';
         return view('tp', $data);
     }
 

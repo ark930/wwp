@@ -14,7 +14,8 @@
 </head>
 <body>
     <div id="app">
-        <editor title="{{ $title }}" author="{{ $author }}" publish_date="{{ $updated_at }}" content="{{ $content }}" show_edit_button="{{ $show_edit_button }}"></editor>
+        <editor title="{{ $title }}" author="{{ $author }}" publish_date="{{ $updated_at }}" content="{{ $content }}"
+                show_edit_button="{{ $show_edit_button }}" is_read_only="{{ $is_read_only }}"></editor>
     </div>
 </body>
 

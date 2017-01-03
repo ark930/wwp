@@ -3,15 +3,15 @@
         <div class='articleComponent'>
             <header>
                 <address class='address'>
-                    <span class="authorName" v-bind:contenteditable="editable">{{ author }}</span> ·
-                    <!--<span class="publishDate">{{ publish_date }}</span> ·-->
-                    <!--<span class="publishChannel">通过 <a href="http://www.a-z.press" target="blank">A-Z.press</a> 发布</span>-->
+                    <span class="authorName" v-bind:contenteditable="editable" @keyup="changeAuthor($event)">{{ author }}</span>
+                    <span class="publishDate" v-if="is_read_only == 'true'"> · {{ publish_date }} ·</span>
+                    <span class="publishChannel" v-if="is_read_only == 'true'">通过 <a href="http://www.a-z.press" target="blank">A-Z.press</a> 发布</span>
                 </address>
-                <h1 class='title' contenteditable="true">
+                <h1 class='title' v-bind:contenteditable="editable" @keyup="changeTitle($event)">
                     {{ title }}
                 </h1>
             </header>
-            <article class="article" v-bind:contenteditable="editable" placeholder="Your story - Plain Text---Yet">
+            <article class="article" v-bind:contenteditable="editable" @keyup="changeContent($event)">
                 {{ content }}
                 <!--<p>之前怎么也找不到的写作工具，现在有了。</p>-->
                 <!--<ul>-->
@@ -31,15 +31,14 @@
 
 <script>
     export default {
-        props: ['title', 'content', 'author', 'publish_date', 'show_edit_button'],
+        props: ['title', 'content', 'author', 'publish_date', 'show_edit_button', 'is_read_only'],
         data: function() {
             return {
-                editorButtonText: '编辑',
-                editable: false,
-                canPublish: false,
-                author: this.author,
-                title: this.title,
-                content: this.content,
+                editorButtonText: '发布',
+                editable: true,
+                canPublish: true,
+//                title: this.title,
+//                content: this.content,
 //                author: this.author,
 //                publishDate: this.publishDate,
             }
@@ -58,16 +57,21 @@
                         })
                         .then((response) => {
                             const body = response.body;
-                            window.location.replace(body.show_url);
+                            location.replace(body.show_url);
                         }, (response) => {
                             const body = response.body;
                             alert(_.values(body)[0]);
                         });
-                } else {
-                    this.editorButtonText = '发布';
-                    this.editable = true;
-                    this.canPublish = true;
                 }
+            },
+            changeAuthor: function(event) {
+                this.author = event.srcElement.innerHTML;
+            },
+            changeTitle: function(event) {
+                this.title = event.srcElement.innerHTML;
+            },
+            changeContent: function(event) {
+                this.content = event.srcElement.innerHTML;
             }
         }
     }

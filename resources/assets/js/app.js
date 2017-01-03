@@ -15,6 +15,21 @@ require('./bootstrap');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('editor', require('./components/Editor.vue'));
+Vue.directive('demo', {
+    twoWay: true,
+    bind: function (el) {
+        this.handler = function () {
+            this.set(this.el.innerHTML)
+        }.bind(this);
+        el.addEventListener('keyup', this.handler)
+    },
+    update: function (el, binding) {
+        el.innerHTML = binding.value || ''
+    },
+    unbind: function (el) {
+        el.removeEventListener('keyup', this.handler)
+    }
+});
 
 const app = new Vue({
     el: '#app'

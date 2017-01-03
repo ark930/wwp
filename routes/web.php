@@ -49,7 +49,6 @@ Route::group(['middleware' => ['cors']], function() {
 
 
 //Route::get('/tp', 'HomeController@tp');
-Route::get('/tp', 'HomeController@tp2');
 Route::get('/', 'HomeController@tp');
 Route::post('/check', 'HomeController@check');
 Route::post('/save', 'HomeController@save');

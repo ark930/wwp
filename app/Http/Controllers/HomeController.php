@@ -28,12 +28,7 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function tp()
-    {
-        return view('index');
-    }
-
-    public function tp2()
+    public function tp(Request $request)
     {
         $user = Auth::user();
         if(empty($user)) {
@@ -42,14 +37,16 @@ class HomeController extends Controller
             ]);
 
             Auth::guard()->login($user);
+            $request->session()->regenerate();
         }
 
         return view('tp', [
             'title' => 'Title',
             'author' => 'Author',
-            'content' => '',
+            'content' => 'Here is your article....',
             'updated_at' => '',
-            'show_edit_button' => 'true'
+            'show_edit_button' => 'true',
+            'is_read_only' => 'false',
         ]);
     }
 
