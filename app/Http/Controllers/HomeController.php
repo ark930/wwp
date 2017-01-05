@@ -41,9 +41,9 @@ class HomeController extends Controller
         }
 
         return view('tp', [
-            'title' => 'Title',
-            'author' => 'Author',
-            'content' => 'Here is your article....',
+            'title' => '',
+            'author' => '',
+            'content' => '',
             'updated_at' => '',
             'show_edit_button' => 'true',
             'is_read_only' => 'false',

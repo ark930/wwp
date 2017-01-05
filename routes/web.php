@@ -56,4 +56,4 @@ Route::get('/test', function() {
     return view('home');
 });
 
-Route::get('p/{name}', 'ArticleController@read');
+Route::get('a/{name}', 'ArticleController@read');

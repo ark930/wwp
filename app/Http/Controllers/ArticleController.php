@@ -70,7 +70,7 @@ class ArticleController extends Controller
 
         $data = $this->filterArticleData($article);
 //        $data['show_url'] = '/p/' . $data['title'] . '-' . date('Y-m-d', strtotime($data['created_at']));
-        $data['show_url'] = '/p/' . $data['id'];
+        $data['show_url'] = '/a/' . $data['id'];
 
         return response()->json($data);
     }

@@ -1,30 +1,45 @@
 <template>
-    <div id="articleview-read" class="articleview editmode">
+    <!--<div class="articleview readmode">-->
+        <!--<div class='articleComponent'>-->
+            <!--<header>-->
+                <!--<address class='address'>-->
+                    <!--<span class="authorName" v-bind:contenteditable="editable" @keyup="changeAuthor($event)" placeholder="Author">{{ author }}</span>-->
+                    <!--<span class="publishDate" v-if="is_read_only == 'true'"> · {{ publish_date }} ·</span>-->
+                    <!--<span class="publishChannel" v-if="is_read_only == 'true'">通过 <a href="http://www.a-z.press" target="blank">A-Z.press</a> 发布</span>-->
+                <!--</address>-->
+                <!--<h1 class='title' v-bind:contenteditable="editable" @keyup="changeTitle($event)" placeholder="Title">-->
+                    <!--{{ myTitle }}-->
+                <!--</h1>-->
+            <!--</header>-->
+            <!--<article class="article" v-bind:contenteditable="editable" @keyup="changeContent($event)"  placeholder="Your story (Plain Text (Yet">-->
+                <!--{{ content }}-->
+            <!--</article>-->
+        <!--</div>-->
+        <!--<div class="actions">-->
+            <!--<button class="btn-publish" v-if="show_edit_button == 'true'" @click="toEdit">{{ editorButtonText }}</button>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="articleview readmode">
         <div class='articleComponent'>
-            <header>
-                <address class='address'>
-                    <span class="authorName" v-bind:contenteditable="editable" @keyup="changeAuthor($event)">{{ author }}</span>
-                    <span class="publishDate" v-if="is_read_only == 'true'"> · {{ publish_date }} ·</span>
-                    <span class="publishChannel" v-if="is_read_only == 'true'">通过 <a href="http://www.a-z.press" target="blank">A-Z.press</a> 发布</span>
-                </address>
-                <h1 class='title' v-bind:contenteditable="editable" @keyup="changeTitle($event)">
-                    {{ title }}
-                </h1>
-            </header>
-            <article class="article" v-bind:contenteditable="editable" @keyup="changeContent($event)">
+            <address class='info' v-if="is_read_only == 'true'">
+                <time class="publishDate">{{ publish_date }}</time>
+                <span class="readTime">阅读 5 分钟</span>
+            </address>
+            <h1 id="title" class='title' v-bind:contenteditable="editable" placeholder="标题" @keyup="changeTitle($event)">
+                {{ title }}
+            </h1>
+            <article id="article" class="article" v-bind:contenteditable="editable" placeholder="你的故事 (Plain Text (Yet"  @keyup="changeContent($event)">
                 {{ content }}
-                <!--<p>之前怎么也找不到的写作工具，现在有了。</p>-->
-                <!--<ul>-->
-                    <!--<li>优质的阅读体验，配得上你的读者</li>-->
-                    <!--<li>写完了分享到任何地方</li>-->
-                    <!--<li>可以写一篇，也可以写一篇篇（在专栏里（还没做</li>-->
-                    <!--<li>没有模板样式之类的鬼，专注创作本身</li>-->
-                <!--</ul>-->
-                <!--<p><a href="" class='block' id="startWriting" @click="showModal = true">开始写作</a></p>-->
             </article>
-        </div>
-        <div class="actions">
-            <button class="btn-publish" v-if="show_edit_button == 'true'" @click="toEdit">{{ editorButtonText }}</button>
+            <address class="info">
+                <div id="author" class="authorName" v-bind:contenteditable="editable" placeholder="作者 (可选项)"  @keyup="changeAuthor($event)">
+                    {{ author }}
+                </div>
+                <span class="publishChannel" v-if="is_read_only == 'true'">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
+            </address>
+            <div class="actions">
+                <button class="btn-publish" v-if="is_read_only == 'false'" @click="toEdit">编辑/发布</button>
+            </div>
         </div>
     </div>
 </template>
@@ -37,23 +52,34 @@
                 editorButtonText: '发布',
                 editable: true,
                 canPublish: true,
-//                title: this.title,
-//                content: this.content,
-//                author: this.author,
+                myTitle: this.title,
+                myAuthor: this.author,
+                myContent: this.content,
 //                publishDate: this.publishDate,
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            if(!this.title) {
+                this.$el.querySelector('#title').innerText = '';
+            }
+            if(!this.author) {
+                this.$el.querySelector('#author').innerText = '';
+            }
+            if(!this.content) {
+                this.$el.querySelector('#article').innerText = '';
+            }
+            if(this.is_read_only == 'true') {
+                this.editable = false;
+            }
+            console.log('Component mounted.');
         },
         methods: {
             toEdit: function() {
                 if(this.canPublish === true) {
-                    Vue.http.post('articles',
-                        {
-                            title: this.title,
-                            author: this.author,
-                            content: this.content,
+                    Vue.http.post('articles', {
+                            title: this.myTitle,
+                            author: this.myAuthor,
+                            content: this.myContent,
                         })
                         .then((response) => {
                             const body = response.body;
@@ -65,13 +91,13 @@
                 }
             },
             changeAuthor: function(event) {
-                this.author = event.srcElement.innerHTML;
+                this.myAuthor = this.$el.querySelector('#author').innerText;
             },
             changeTitle: function(event) {
-                this.title = event.srcElement.innerHTML;
+                this.myTitle = this.$el.querySelector('#title').innerText;
             },
             changeContent: function(event) {
-                this.content = event.srcElement.innerHTML;
+                this.myContent = this.$el.querySelector('#article').innerText;
             }
         }
     }
