@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -72,5 +73,13 @@ class HomeController extends Controller
         $data = json_decode($data, true);
 
         dd($data, $author, $authorUrl, $pageId, $title);
+    }
+
+    public function notify(Request $request)
+    {
+        Log::info($request->method() . ' ' . $request->fullUrl());
+        Log::info(\GuzzleHttp\json_encode($request->all()));
+
+        return response($request->all(), 401);
     }
 }
