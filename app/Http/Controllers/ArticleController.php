@@ -58,6 +58,7 @@ class ArticleController extends Controller
 
         $user = Auth::user();
         $article = new Article();
+        $article['tag'] = strtolower(str_random(8));
         $article['status'] = Article::STATUS_DRAFT;
         $article['author'] = $author;
         $user->articles()->save($article);
@@ -70,7 +71,7 @@ class ArticleController extends Controller
 
         $data = $this->filterArticleData($article);
 //        $data['show_url'] = '/p/' . $data['title'] . '-' . date('Y-m-d', strtotime($data['created_at']));
-        $data['show_url'] = '/a/' . $data['id'];
+        $data['show_url'] = '/a/' . $data['tag'];
 
         return response()->json($data);
     }
@@ -249,13 +250,14 @@ class ArticleController extends Controller
         return response()->json($article->comments, 200);
     }
 
-    public function read($id)
+    public function read($tag)
     {
-        $article = $this->findArticle($id);
+        $article = $this->findArticleByTag($tag);
         $data = $this->filterArticleData($article);
 
         $data['show_edit_button'] = 'false';
-        $data['is_read_only'] = 'true';
+        $data['is_read_only'] = true;
+
         return view('tp', $data);
     }
 
@@ -294,6 +296,20 @@ class ArticleController extends Controller
         return $article;
     }
 
+    private function findArticleByTag($articleTag) : Article
+    {
+        $user = Auth::user();
+        $article = Article::where('user_id', $user['id'])
+            ->where('tag', $articleTag)
+            ->first();
+
+        if(empty($article)) {
+            throw new ModelNotFoundException();
+        }
+
+        return $article;
+    }
+
     private function filterArticleData(Article $article)
     {
         $status = $article['status'];
@@ -310,6 +326,7 @@ class ArticleController extends Controller
 
         $data = [
             'id' => $article['id'],
+            'tag' => $article['tag'],
             'author' => $article['author'],
             'cover_url' => $version['cover_url'],
             'title' => $version['title'],
@@ -325,6 +342,10 @@ class ArticleController extends Controller
 
     private function readTime($content)
     {
+        if(empty($content)) {
+            return 0;
+        }
+
         $count = mb_strlen($content, 'UTF-8');
 
         return ceil($count / 500);

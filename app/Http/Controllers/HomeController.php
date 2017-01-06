@@ -47,7 +47,7 @@ class HomeController extends Controller
             'content' => '',
             'updated_at' => '',
             'show_edit_button' => 'true',
-            'is_read_only' => 'false',
+            'is_read_only' => false,
         ]);
     }
 
