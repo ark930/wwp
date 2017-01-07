@@ -127,9 +127,9 @@
                         this.contentEmptyError = true;
                     } else {
                         Vue.http.post('articles', {
-                            title: this.myTitle,
-                            author: this.myAuthor,
-                            content: this.myContent,
+                            title: this.$el.querySelector('#title').innerHTML,
+                            author: this.$el.querySelector('#author').innerHTML,
+                            content: this.$el.querySelector('#article').innerHTML,
                         })
                         .then((response) => {
                             const body = response.body;
