@@ -298,9 +298,7 @@ class ArticleController extends Controller
 
     private function findArticleByTag($articleTag) : Article
     {
-        $user = Auth::user();
-        $article = Article::where('user_id', $user['id'])
-            ->where('tag', $articleTag)
+        $article = Article::where('tag', $articleTag)
             ->first();
 
         if(empty($article)) {
