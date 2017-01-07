@@ -23,6 +23,12 @@
 {{--<script src="js/vue-min.js"></script>--}}
 {{--<script src="js/main-min.js"></script>--}}
 <script src="{{ elixir('js/app.js') }}"></script>
+{{--<script src="{{ elixir('js/jquery.min.js') }}"></script>--}}
+{{--<script src="{{ elixir('js/jquery.selection.min.js') }}"></script>--}}
+{{--<script src="{{ elixir('js/autosize.min.js') }}"></script>--}}
+{{--<script src="{{ elixir('js/load-image.all.min.js') }}"></script>--}}
+{{--<script src="{{ elixir('js/quill.min.js') }}"></script>--}}
+{{--<script src="{{ elixir('js/core.min.js') }}"></script>--}}
 
 
 </html>

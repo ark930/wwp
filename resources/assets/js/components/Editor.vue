@@ -7,7 +7,7 @@
             </address>
             <h1 id="title" class="title" v-if="showTitle" v-bind:contenteditable="editable" placeholder="标题" @keyup="changeTitle($event)" v-text="title">
             </h1>
-            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable" placeholder="你的故事" required='true' @keyup="changeContent($event)">
+            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable" placeholder="你的故事" required='true' @keyup="changeContent($event)" @onfocus="focusContent($event)">
                 {{ content }}
                 <!--<p>举个例子，有一类算法称为分类算法，它可以将数据划分为不同的组别。一个用来识别手写数字的分类算法，不用修改一行代码，就可以把这个算法用来将电子邮件分为垃圾邮件和普通邮件。算法没变，但是输入的训练数据变了，因此它得出了不同的分类逻辑。</p>-->
                 <!--<p>假设你是一名房地产经纪人，生意越做越大，因此你雇了一批新员工来帮你。但是问题来了——你可以看一眼房子就知道它到底值多少钱，新员工没有经验，不知道如何估价。</p>-->
@@ -48,7 +48,7 @@
                 canPublish: true,
                 myTitle: this.title,
                 myAuthor: this.author,
-                myContent: this.content,
+                myContent: encodeURI(this.content),
                 contentEmptyError: false,
                 showAuthor: true,
                 showTitle: true,
@@ -70,13 +70,23 @@
         },
         mounted() {
             if(!this.title) {
-                this.$el.querySelector('#title').innerText = '';
+                this.$el.querySelector('#title').innerHTML = '';
+            } else {
+                this.$el.querySelector('#title').innerHTML = this.title;
             }
             if(!this.author) {
-                this.$el.querySelector('#author').innerText = '';
+                this.$el.querySelector('#author').innerHTML = '';
+            } else {
+                this.$el.querySelector('#author').innerHTML = this.author;
             }
             if(!this.content) {
-                this.$el.querySelector('#article').innerText = '';
+                this.$el.querySelector('#article').innerHTML = '';
+                let p = document.createElement('p');
+                let br = document.createElement('br');
+                p.appendChild(br);
+                this.$el.querySelector('#article').appendChild(p);
+            } else {
+                this.$el.querySelector('#article').innerHTML = this.content;
             }
             if(this.is_read_only) {
                 this.editable = false;
@@ -94,6 +104,23 @@
             console.log('Component mounted.');
         },
         methods: {
+            putCursorAtEnd: function(el) {
+                el.focus();
+                if (typeof window.getSelection != "undefined"
+                    && typeof document.createRange != "undefined") {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    range.collapse(false);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (typeof document.body.createTextRange != "undefined") {
+                    var textRange = document.body.createTextRange();
+                    textRange.moveToElementText(el);
+                    textRange.collapse(false);
+                    textRange.select();
+                }
+            },
             toEdit: function() {
                 if(this.canPublish === true) {
                     if(_.isEmpty(this.myContent)) {
@@ -115,16 +142,32 @@
                 }
             },
             changeAuthor: function(event) {
-                this.myAuthor = this.$el.querySelector('#author').innerText;
+                this.myAuthor = this.$el.querySelector('#author').innerHTML;
             },
             changeTitle: function(event) {
-                this.myTitle = this.$el.querySelector('#title').innerText;
+                this.myTitle = this.$el.querySelector('#title').innerHTML;
             },
             changeContent: function(event) {
+                console.log(event, event.key.length);
+                let article = this.$el.querySelector('#article');
+
                 if(this.contentEmptyError && this.myContent) {
                     this.contentEmptyError = false;
                 }
-                this.myContent = this.$el.querySelector('#article').innerText;
+
+//                if(_.isEmpty(this.myContent) && event.key.length == 1) {
+//                    let p = document.createElement('p');
+//                    p.innerText = event.key;
+//                    article.innerText = '';
+//                    article.appendChild(p);
+//                    this.putCursorAtEnd(article);
+//                }
+
+                this.myContent = article.innerHTML;
+                console.log(this.myContent);
+            },
+            focusContent: function(event) {
+                console.log(111,event);
             }
         }
     }
