@@ -7,7 +7,9 @@
             <h1 id="title" class="title" v-bind:class="titleError" v-bind:contenteditable="editable" placeholder="标题" required="true" @focus="titleFocus()" @keydown="changeTitle($event)">
                 {{ title }}
             </h1>
-            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable" placeholder="你的故事" required='true' @focus="articleFocus()" @keydown="changeContent($event)">
+            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable"
+                     placeholder="你的故事" required='true' @focus="articleFocus()" @keydown="keydownContent($event)"
+                     @keyup="keyupContent($event)">
                 {{ content }}
             </article>
             <address class="info">
@@ -32,6 +34,7 @@
                 titleEmptyError: false,
                 contentEmptyError: false,
                 myMode: this.mode,
+                isUpdate: false,
             }
         },
         computed: {
@@ -51,8 +54,8 @@
                 this.$el.querySelector('#title').innerHTML = '';
                 this.$el.querySelector('#author').innerHTML = '';
                 this.$el.querySelector('#article').innerHTML = '';
-                let br = document.createElement('br');
-                this.$el.querySelector('#article').appendChild(br);
+//                let br = document.createElement('br');
+//                this.$el.querySelector('#article').appendChild(br);
             } else {
                 this.$el.querySelector('#title').textContent = decodeURI(this.title);
                 this.$el.querySelector('#author').textContent = decodeURI(this.author);
@@ -81,10 +84,19 @@
                 if(this.myMode === 'author-edit') {
                     if(_.isEmpty(this.$el.querySelector('#title').innerHTML)) {
                         this.titleEmptyError = true;
-                    }else if(_.isEmpty(this.$el.querySelector('#article').innerHTML)) {
+                    } else if(_.isEmpty(this.$el.querySelector('#article').innerHTML)) {
                         this.contentEmptyError = true;
                     } else {
-                        Vue.http.post('/articles', {
+                        let url = '';
+                        if(this.isUpdate) {
+                            let fullUrl = window.location.href;
+                            let tags = fullUrl.split('/');
+                            let articleTag = tags[tags.length - 1];
+                            url = '/a/' + articleTag;
+                        } else {
+                            url = '/articles';
+                        }
+                        Vue.http.post(url, {
                             title: encodeURI(this.$el.querySelector('#title').textContent),
                             author: encodeURI(this.$el.querySelector('#author').textContent),
                             content: this.$el.querySelector('#article').innerHTML,
@@ -105,6 +117,7 @@
                 if(this.myMode === 'author-read') {
                     this.myMode = 'author-edit';
                     this.editable = true;
+                    this.isUpdate = true;
                 }
             },
             changeTitle: function(e) {
@@ -126,29 +139,35 @@
                     e.target.parentElement.previousElementSibling.focus();
                 }
             },
-            changeContent: function(e) {
-                console.log(e, e.target.textContent);
-                let article = e.target;
-
-                let code = e.keyCode || e.which;
-                // Backspace event
-                if(code == 8) {
-                    if(article.textContent.length == 1) {
-                        e.preventDefault();
-                        article.textContent = '';
-                        let br = document.createElement('br');
-                        article.appendChild(br);
-                    }
-                }
-//                else if(_.isEmpty(article.textContent) && e.key.length == 1) {
-//                    e.preventDefault();
-//                    let p = document.createElement('p');
-//                    p.innerText = e.key;
-//                    article.innerText = '';
-//                    article.appendChild(p);
-//                    this.putCursorAtEnd(article);
+//            keydownContent: function(e) {
+//                let code = e.keyCode || e.which;
+//                // Backspace event
+//                if(code == 8) {
+//                    let article = e.target;
+//                    if(article.textContent.length == 1) {
+//                        e.preventDefault();
+//                        article.textContent = '';
+//                        let br = document.createElement('br');
+//                        article.appendChild(br);
+//                    }
 //                }
-            },
+////                else if(_.isEmpty(article.textContent) && e.key.length == 1) {
+////                    e.preventDefault();
+////                    let p = document.createElement('p');
+////                    p.innerText = e.key;
+////                    article.innerText = '';
+////                    article.appendChild(p);
+////                    this.putCursorAtEnd(article);
+////                }
+//            },
+//            keyupContent: function(e) {
+//                let article = e.target;
+//                console.log(article, article.innerHTML);
+//                if(_.isEmpty(article.innerHTML)) {
+//                    let br = document.createElement('br');
+//                    article.appendChild(br);
+//                }
+//            },
             titleFocus: function() {
                 if(this.titleEmptyError) {
                     this.titleEmptyError = false;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
 use App\Models\ArticleVersion;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -267,10 +268,30 @@ class ArticleController extends Controller
         return view('tp', $data);
     }
 
-    private function updateArticle(Request $request, $tag) : Article
+    public function editByTag(Request $request, $tag)
     {
-        $article = $this->findArticleByTag($tag);
+        $user = Auth::user();
+        if(empty($user)) {
+            throw new AuthenticationException();
+        }
 
+        $article = $this->findArticleByTag($tag);
+        $articleUser = $article->writer;
+        if($user['id'] != $articleUser['id']) {
+            throw new AuthenticationException();
+        }
+
+        $article = $this->updateArticle($request, $article);
+        $article->save();
+        $data = $this->filterArticleData($article);
+        $data['mode'] = 'author-read';
+        $data['show_url'] = '/a/' . $data['tag'];
+
+        return response()->json($data);
+    }
+
+    private function updateArticle(Request $request, Article $article) : Article
+    {
         $title = $request->input('title');
         $content = $request->input('content');
         $author = $request->input('author');
@@ -279,7 +300,7 @@ class ArticleController extends Controller
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
-
+        $articleVersion->save();
 //        $status = $article['status'];
 //        if($status === Article::STATUS_PUBLISHED) {
 //            $article['status'] = Article::STATUS_PUBLISHED_WITH_DRAFT;

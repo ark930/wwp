@@ -56,7 +56,8 @@ Route::get('/test', function() {
     return view('home');
 });
 
-Route::get('a/{name}', 'ArticleController@read');
+Route::get('a/{tag}', 'ArticleController@read');
+Route::post('a/{tag}', 'ArticleController@editByTag');
 
 Route::get('v1/charges/{id}/notify', 'HomeController@notify');
 Route::post('v1/charges/{id}/notify', 'HomeController@notify');
