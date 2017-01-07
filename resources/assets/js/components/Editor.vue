@@ -2,8 +2,7 @@
     <div v-bind:mode="mode" class="articleview">
         <div class='articleComponent'>
             <address class='info'>
-                <time class="publishDate">{{ publish_date }}</time>
-                <span class="readTime">阅读 {{ read_min }} 分钟</span>
+                <time class="publishDate">{{ publish_date }}</time><span class="readTime">阅读 {{ read_min }} 分钟</span>
             </address>
             <h1 id="title" class="title" v-bind:class="titleError" v-bind:contenteditable="editable" placeholder="标题" required="true" @focus="titleFocus()" @keydown="changeTitle($event)">
                 {{ title }}
@@ -14,8 +13,7 @@
             <address class="info">
                 <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName" @keydown="changeAuthor($event)">
                     {{ author }}
-                </div>
-                <span class="publishChannel">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
+                </div><span class="publishChannel">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
             </address>
             <div class="actions">
                 <button class="btn-publish" @click="toPublish">发布</button>
@@ -111,9 +109,12 @@
                 }
             },
             changeTitle: function(e) {
+                console.log(e);
                 let code = e.keyCode || e.which;
-                if(code == 13) {
-                    e.preventDefault();
+                if(code == 13 || code == 40) {
+                    // make enter, arrow down to tab behavior
+                    event.preventDefault();
+                    this.$el.querySelector('#article').focus();
                 }
             },
             changeAuthor: function(e) {
