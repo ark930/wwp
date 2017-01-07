@@ -139,7 +139,7 @@
                     e.target.parentElement.previousElementSibling.focus();
                 }
             },
-//            keydownContent: function(e) {
+            keydownContent: function(e) {
 //                let code = e.keyCode || e.which;
 //                // Backspace event
 //                if(code == 8) {
@@ -151,23 +151,23 @@
 //                        article.appendChild(br);
 //                    }
 //                }
-////                else if(_.isEmpty(article.textContent) && e.key.length == 1) {
-////                    e.preventDefault();
-////                    let p = document.createElement('p');
-////                    p.innerText = e.key;
-////                    article.innerText = '';
-////                    article.appendChild(p);
-////                    this.putCursorAtEnd(article);
-////                }
-//            },
-//            keyupContent: function(e) {
+//                else if(_.isEmpty(article.textContent) && e.key.length == 1) {
+//                    e.preventDefault();
+//                    let p = document.createElement('p');
+//                    p.innerText = e.key;
+//                    article.innerText = '';
+//                    article.appendChild(p);
+//                    this.putCursorAtEnd(article);
+//                }
+            },
+            keyupContent: function(e) {
 //                let article = e.target;
 //                console.log(article, article.innerHTML);
 //                if(_.isEmpty(article.innerHTML)) {
 //                    let br = document.createElement('br');
 //                    article.appendChild(br);
 //                }
-//            },
+            },
             titleFocus: function() {
                 if(this.titleEmptyError) {
                     this.titleEmptyError = false;
