@@ -1,7 +1,7 @@
 <template>
     <div id="articleview-read" class="articleview" v-bind:class="classObject">
         <div class='articleComponent'>
-            <address class='info' v-if="is_read_only">
+            <address class='info'>
                 <time class="publishDate">{{ publish_date }}</time>
                 <span class="readTime">阅读 {{ read_min }} 分钟</span>
             </address>
@@ -29,10 +29,10 @@
                 <div id="author" class="authorName" v-if="showAuthor" v-bind:contenteditable="editable" placeholder="作者（选填）" @keyup="changeAuthor($event)">
                     {{ author }}
                 </div>
-                <span class="publishChannel" v-if="is_read_only">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
+                <span class="publishChannel">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
             </address>
             <div class="actions">
-                <button class="btn-publish" v-if="!is_read_only" @click="toEdit">编辑/发布</button>
+                <button class="btn-publish" @click="toEdit">编辑/发布</button>
             </div>
         </div>
     </div>
