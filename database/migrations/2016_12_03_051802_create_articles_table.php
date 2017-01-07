@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->char('tag', 10)->unique();
-            $table->string('author', 100);
+            $table->text('author');
             $table->unsignedInteger('publish_version_id')->nullable();
             $table->unsignedInteger('draft_version_id')->nullable();
             $table->enum('status', ['draft', 'published', 'published_with_draft', 'trashed']);

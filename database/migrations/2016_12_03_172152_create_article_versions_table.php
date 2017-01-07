@@ -17,7 +17,7 @@ class CreateArticleVersionsTable extends Migration
             $table->increments('id');
 //            $table->unsignedInteger('article_id');
             $table->string('cover_url')->nullable();
-            $table->string('title')->nullable();
+            $table->text('title')->nullable();
             $table->longText('content')->nullable();
             $table->timestamp('created_at');
         });

@@ -46,8 +46,8 @@
                 editorButtonText: '发布',
                 editable: true,
                 canPublish: true,
-                myTitle: this.title,
-                myAuthor: this.author,
+                myTitle: encodeURI(this.title),
+                myAuthor: encodeURI(this.author),
                 myContent: encodeURI(this.content),
                 contentEmptyError: false,
                 showAuthor: true,
@@ -123,6 +123,8 @@
             },
             toEdit: function() {
                 if(this.canPublish === true) {
+                    console.log(encodeURI(this.$el.querySelector('#title').innerHTML));
+                    console.log((this.$el.querySelector('#title').innerHTML));
                     if(_.isEmpty(this.myContent)) {
                         this.contentEmptyError = true;
                     } else {
@@ -132,9 +134,11 @@
                             content: this.$el.querySelector('#article').innerHTML,
                         })
                         .then((response) => {
+                            console.log('success', response);
                             const body = response.body;
                             location.replace(body.show_url);
                         }, (response) => {
+                            console.log('error', response);
                             const body = response.body;
                             alert(_.values(body)[0]);
                         });
@@ -148,7 +152,7 @@
                 this.myTitle = this.$el.querySelector('#title').innerHTML;
             },
             changeContent: function(event) {
-                console.log(event, event.key.length);
+//                console.log(event, event.key.length);
                 let article = this.$el.querySelector('#article');
 
                 if(this.contentEmptyError && this.myContent) {
