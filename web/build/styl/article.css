@@ -325,70 +325,64 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.articleview[mode='edit'] .articleComponent {
+.articleview[mode*='edit'] .articleComponent {
   font-family: monospace, monospace;
 }
-.articleview[mode='edit'] .articleComponent .info>:not(.authorName) {
+.articleview[mode*='edit'] .articleComponent .info>:not(.authorName) {
   display: none;
 }
 @media (min-width: 320px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 17rem;
   }
 }
 @media (min-width: 360px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 20rem;
   }
 }
 @media (min-width: 375px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 21rem;
   }
 }
 @media (min-width: 411px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 23rem;
   }
 }
 @media (min-width: 480px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 27rem;
   }
 }
 @media (min-width: 540px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 31rem;
   }
 }
 @media (min-width: 600px) {
-  .articleview[mode='edit'] .articleComponent {
+  .articleview[mode*='edit'] .articleComponent {
     width: 35rem;
   }
 }
-.articleview[mode='edit'] .articleComponent .actions .btn-edit {
+.articleview[mode*='edit'] .articleComponent .actions .btn-edit {
   display: none;
 }
-.articleview[mode='guest'] .articleComponent,
-.articleview[mode='published'] .articleComponent {
+.articleview[mode*='read'] .articleComponent {
   font-family: -apple-system, 'PingFang SC', 'Source Sans Pro', 'Helvetica Neue', "Microsoft YaHei", Arial, serif;
 }
-.articleview[mode='guest'] .articleComponent .info a,
-.articleview[mode='published'] .articleComponent .info a {
+.articleview[mode*='read'] .articleComponent .info a {
   display: inline-block;
 }
-.articleview[mode='guest'] .articleComponent .info a:hover,
-.articleview[mode='published'] .articleComponent .info a:hover {
+.articleview[mode*='read'] .articleComponent .info a:hover {
   color: #ff5638;
 }
-.articleview[mode='guest'] .articleComponent .info>*,
-.articleview[mode='published'] .articleComponent .info>* {
+.articleview[mode*='read'] .articleComponent .info>* {
   display: inline-block;
 }
-.articleview[mode='guest'] .articleComponent .info .authorName:after,
-.articleview[mode='published'] .articleComponent .info .authorName:after,
-.articleview[mode='guest'] .articleComponent .info .publishDate:after,
-.articleview[mode='published'] .articleComponent .info .publishDate:after {
+.articleview[mode*='read'] .articleComponent .info .authorName:after,
+.articleview[mode*='read'] .articleComponent .info .publishDate:after {
   content: " · ";
   content: "";
   float: right;
@@ -400,113 +394,91 @@ body {
   border-radius: 99px;
   background: #afb3b6;
 }
-.articleview[mode='guest'] .articleComponent .info:last-of-type:before,
-.articleview[mode='published'] .articleComponent .info:last-of-type:before {
+.articleview[mode*='read'] .articleComponent .info:last-of-type:before {
   content: " - ";
   margin: 1rem auto;
   color: #afb3b6;
   display: block;
 }
-.articleview[mode='guest'] .articleComponent .info .authorName:empty:before,
-.articleview[mode='published'] .articleComponent .info .authorName:empty:before {
+.articleview[mode*='read'] .articleComponent .info .authorName:empty:before {
   display: inline-block;
   content: "匿名用户";
   color: #afb3b6;
 }
-.articleview[mode='guest'] .articleComponent .article ul,
-.articleview[mode='published'] .articleComponent .article ul,
-.articleview[mode='guest'] .articleComponent .article ol,
-.articleview[mode='published'] .articleComponent .article ol {
+.articleview[mode*='read'] .articleComponent .article ul,
+.articleview[mode*='read'] .articleComponent .article ol {
   list-style-position: outside;
   padding-left: 2rem;
 }
-.articleview[mode='guest'] .articleComponent .article ul li,
-.articleview[mode='published'] .articleComponent .article ul li,
-.articleview[mode='guest'] .articleComponent .article ol li,
-.articleview[mode='published'] .articleComponent .article ol li {
+.articleview[mode*='read'] .articleComponent .article ul li,
+.articleview[mode*='read'] .articleComponent .article ol li {
   line-height: 1.5rem;
 }
-.articleview[mode='guest'] .articleComponent .article a:not(:only-child),
-.articleview[mode='published'] .articleComponent .article a:not(:only-child) {
+.articleview[mode*='read'] .articleComponent .article a:not(:only-child) {
   color: #44484b;
   border-bottom: #ff5638 dotted 1px;
 }
-.articleview[mode='guest'] .articleComponent .article a:not(:only-child):hover,
-.articleview[mode='published'] .articleComponent .article a:not(:only-child):hover {
+.articleview[mode*='read'] .articleComponent .article a:not(:only-child):hover {
   color: #ff5638;
   border-bottom: #ff5638 dotted 1px;
 }
-.articleview[mode='guest'] .articleComponent .article a:only-child,
-.articleview[mode='published'] .articleComponent .article a:only-child {
+.articleview[mode*='read'] .articleComponent .article a:only-child {
   color: #ff5638;
   border-bottom: rgba(255,86,56,0) solid 2px;
 }
-.articleview[mode='guest'] .articleComponent .article a:only-child:hover,
-.articleview[mode='published'] .articleComponent .article a:only-child:hover {
+.articleview[mode*='read'] .articleComponent .article a:only-child:hover {
   border-bottom: #ff5638 solid 2px;
 }
-.articleview[mode='guest'] .articleComponent .article q,
-.articleview[mode='published'] .articleComponent .article q,
-.articleview[mode='guest'] .articleComponent .article blockquote,
-.articleview[mode='published'] .articleComponent .article blockquote {
+.articleview[mode*='read'] .articleComponent .article q,
+.articleview[mode*='read'] .articleComponent .article blockquote {
   display: block;
   border-left: solid 0.25rem #afb3b6;
   padding-left: 0.5rem;
 }
-.articleview[mode='guest'] .articleComponent .article q:before,
-.articleview[mode='published'] .articleComponent .article q:before {
+.articleview[mode*='read'] .articleComponent .article q:before {
   content: '';
 }
-.articleview[mode='guest'] .articleComponent .article q:after,
-.articleview[mode='published'] .articleComponent .article q:after {
+.articleview[mode*='read'] .articleComponent .article q:after {
   content: '';
 }
 @media (min-width: 320px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 17rem;
   }
 }
 @media (min-width: 360px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 20rem;
   }
 }
 @media (min-width: 375px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 21rem;
   }
 }
 @media (min-width: 411px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 23rem;
   }
 }
 @media (min-width: 480px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 27rem;
   }
 }
 @media (min-width: 540px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 31rem;
   }
 }
 @media (min-width: 600px) {
-  .articleview[mode='guest'] .articleComponent,
-  .articleview[mode='published'] .articleComponent {
+  .articleview[mode*='read'] .articleComponent {
     max-width: 35rem;
   }
 }
-.articleview[mode='guest'] .articleComponent .actions .btn-publish,
-.articleview[mode='published'] .articleComponent .actions .btn-publish {
+.articleview[mode*='read'] .articleComponent .actions .btn-publish {
   display: none;
 }
-.articleview[mode='guest'] .actions {
+.articleview[mode*='audience'] .actions {
   display: none;
 }
