@@ -5,14 +5,14 @@
                 <time class="publishDate">{{ publish_date }}</time>
                 <span class="readTime">阅读 {{ read_min }} 分钟</span>
             </address>
-            <h1 id="title" class="title" v-bind:class="titleError" v-bind:contenteditable="editable" placeholder="标题" required="true" @focus="titleFocus()">
+            <h1 id="title" class="title" v-bind:class="titleError" v-bind:contenteditable="editable" placeholder="标题" required="true" @focus="titleFocus()" @keydown="changeTitle($event)">
                 {{ title }}
             </h1>
-            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable" placeholder="你的故事" required='true' @focus="articleFocus()" @keyup="changeContent($event)">
+            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable" placeholder="你的故事" required='true' @focus="articleFocus()" @keydown="changeContent($event)">
                 {{ content }}
             </article>
             <address class="info">
-                <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName">
+                <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName" @keydown="changeAuthor($event)">
                     {{ author }}
                 </div>
                 <span class="publishChannel">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
@@ -110,11 +110,23 @@
                     this.editable = true;
                 }
             },
+            changeTitle: function(e) {
+                let code = e.keyCode || e.which;
+                if(code == 13) {
+                    e.preventDefault();
+                }
+            },
+            changeAuthor: function(e) {
+                let code = e.keyCode || e.which;
+                if(code == 13) {
+                    e.preventDefault();
+                }
+            },
             changeContent: function(event) {
-                event.preventDefault();
                 let article = this.$el.querySelector('#article');
 
                 if(_.isEmpty(this.myContent) && event.key.length == 1) {
+                    event.preventDefault();
                     let p = document.createElement('p');
                     p.innerText = event.key;
                     article.innerText = '';
