@@ -295,6 +295,9 @@ body {
   line-height: 1.5rem;
   min-height: 1.5rem;
 }
+.articleview .articleComponent .article>* {
+  margin: 1rem 0;
+}
 .articleview .actions {
   display: flex;
   flex-direction: row;
@@ -321,67 +324,76 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.articleview.editmode .articleComponent {
+.articleview[mode='edit'] .articleComponent {
   font-family: monospace, monospace;
 }
-.articleview.editmode .articleComponent .info>:not(.authorName) {
+.articleview[mode='edit'] .articleComponent .info>:not(.authorName) {
   display: none;
 }
 @media (min-width: 320px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 17rem;
   }
 }
 @media (min-width: 360px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 20rem;
   }
 }
 @media (min-width: 375px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 21rem;
   }
 }
 @media (min-width: 411px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 23rem;
   }
 }
 @media (min-width: 480px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 27rem;
   }
 }
 @media (min-width: 540px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 31rem;
   }
 }
 @media (min-width: 600px) {
-  .articleview.editmode .articleComponent {
+  .articleview[mode='edit'] .articleComponent {
     width: 35rem;
   }
 }
-.articleview.editmode .articleComponent .actions .btn-edit {
+.articleview[mode='edit'] .articleComponent .actions .btn-edit {
   display: none;
 }
-.articleview.readmode .articleComponent {
+.articleview[mode='guest'] .articleComponent,
+.articleview[mode='published'] .articleComponent {
   font-family: -apple-system, 'PingFang SC', 'Source Sans Pro', 'Helvetica Neue', "Microsoft YaHei", Arial, serif;
 }
-.articleview.readmode .articleComponent .info a {
+.articleview[mode='guest'] .articleComponent .info a,
+.articleview[mode='published'] .articleComponent .info a {
   display: inline-block;
 }
-.articleview.readmode .articleComponent .info a:hover {
+.articleview[mode='guest'] .articleComponent .info a:hover,
+.articleview[mode='published'] .articleComponent .info a:hover {
   color: #ff5638;
 }
-.articleview.readmode .articleComponent .info .authorName,
-.articleview.readmode .articleComponent .info .publishDate,
-.articleview.readmode .articleComponent .info .publishChannel,
-.articleview.readmode .articleComponent .info .readTime {
+.articleview[mode='guest'] .articleComponent .info .authorName,
+.articleview[mode='published'] .articleComponent .info .authorName,
+.articleview[mode='guest'] .articleComponent .info .publishDate,
+.articleview[mode='published'] .articleComponent .info .publishDate,
+.articleview[mode='guest'] .articleComponent .info .publishChannel,
+.articleview[mode='published'] .articleComponent .info .publishChannel,
+.articleview[mode='guest'] .articleComponent .info .readTime,
+.articleview[mode='published'] .articleComponent .info .readTime {
   display: inline-block;
 }
-.articleview.readmode .articleComponent .info .readTime:before,
-.articleview.readmode .articleComponent .info .publishChannel:before {
+.articleview[mode='guest'] .articleComponent .info .readTime:before,
+.articleview[mode='published'] .articleComponent .info .readTime:before,
+.articleview[mode='guest'] .articleComponent .info .publishChannel:before,
+.articleview[mode='published'] .articleComponent .info .publishChannel:before {
   content: " · ";
   content: "";
   float: left;
@@ -393,86 +405,107 @@ body {
   border-radius: 99px;
   background: #afb3b6;
 }
-.articleview.readmode .articleComponent .info:last-of-type:before {
+.articleview[mode='guest'] .articleComponent .info:last-of-type:before,
+.articleview[mode='published'] .articleComponent .info:last-of-type:before {
   content: " - ";
   margin: 1rem auto;
   color: #afb3b6;
   display: block;
 }
-.articleview.readmode .articleComponent .article p {
-  margin: 1rem 0;
-}
-.articleview.readmode .articleComponent .article ul,
-.articleview.readmode .articleComponent .article ol {
+.articleview[mode='guest'] .articleComponent .article ul,
+.articleview[mode='published'] .articleComponent .article ul,
+.articleview[mode='guest'] .articleComponent .article ol,
+.articleview[mode='published'] .articleComponent .article ol {
   list-style-position: outside;
   padding-left: 2rem;
 }
-.articleview.readmode .articleComponent .article ul li,
-.articleview.readmode .articleComponent .article ol li {
+.articleview[mode='guest'] .articleComponent .article ul li,
+.articleview[mode='published'] .articleComponent .article ul li,
+.articleview[mode='guest'] .articleComponent .article ol li,
+.articleview[mode='published'] .articleComponent .article ol li {
   line-height: 1.5rem;
 }
-.articleview.readmode .articleComponent .article a:not(:only-child) {
+.articleview[mode='guest'] .articleComponent .article a:not(:only-child),
+.articleview[mode='published'] .articleComponent .article a:not(:only-child) {
   color: #44484b;
   border-bottom: #ff5638 dotted 1px;
 }
-.articleview.readmode .articleComponent .article a:not(:only-child):hover {
+.articleview[mode='guest'] .articleComponent .article a:not(:only-child):hover,
+.articleview[mode='published'] .articleComponent .article a:not(:only-child):hover {
   color: #ff5638;
   border-bottom: #ff5638 dotted 1px;
 }
-.articleview.readmode .articleComponent .article a:only-child {
+.articleview[mode='guest'] .articleComponent .article a:only-child,
+.articleview[mode='published'] .articleComponent .article a:only-child {
   color: #ff5638;
   border-bottom: rgba(255,86,56,0) solid 2px;
 }
-.articleview.readmode .articleComponent .article a:only-child:hover {
+.articleview[mode='guest'] .articleComponent .article a:only-child:hover,
+.articleview[mode='published'] .articleComponent .article a:only-child:hover {
   border-bottom: #ff5638 solid 2px;
 }
-.articleview.readmode .articleComponent .article q,
-.articleview.readmode .articleComponent .article blockquote {
+.articleview[mode='guest'] .articleComponent .article q,
+.articleview[mode='published'] .articleComponent .article q,
+.articleview[mode='guest'] .articleComponent .article blockquote,
+.articleview[mode='published'] .articleComponent .article blockquote {
   display: block;
   border-left: solid 0.25rem #afb3b6;
   padding-left: 0.5rem;
 }
-.articleview.readmode .articleComponent .article q:before {
+.articleview[mode='guest'] .articleComponent .article q:before,
+.articleview[mode='published'] .articleComponent .article q:before {
   content: '';
 }
-.articleview.readmode .articleComponent .article q:after {
+.articleview[mode='guest'] .articleComponent .article q:after,
+.articleview[mode='published'] .articleComponent .article q:after {
   content: '';
 }
 @media (min-width: 320px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 17rem;
   }
 }
 @media (min-width: 360px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 20rem;
   }
 }
 @media (min-width: 375px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 21rem;
   }
 }
 @media (min-width: 411px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 23rem;
   }
 }
 @media (min-width: 480px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 27rem;
   }
 }
 @media (min-width: 540px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 31rem;
   }
 }
 @media (min-width: 600px) {
-  .articleview.readmode .articleComponent {
+  .articleview[mode='guest'] .articleComponent,
+  .articleview[mode='published'] .articleComponent {
     max-width: 35rem;
   }
 }
-.articleview.readmode .articleComponent .actions .btn-publish {
+.articleview[mode='guest'] .articleComponent .actions .btn-publish,
+.articleview[mode='published'] .articleComponent .actions .btn-publish {
+  display: none;
+}
+.articleview[mode='guest'] .actions {
   display: none;
 }
