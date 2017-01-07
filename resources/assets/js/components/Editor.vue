@@ -1,5 +1,5 @@
 <template>
-    <div v-bind:mode="mode" class="articleview">
+    <div v-bind:mode="myMode" class="articleview">
         <div class='articleComponent'>
             <address class='info'>
                 <time class="publishDate">{{ publish_date }}</time><span class="readTime">阅读 {{ read_min }} 分钟</span>
@@ -31,6 +31,7 @@
                 editable: this.mode === 'author-edit',
                 titleEmptyError: false,
                 contentEmptyError: false,
+                myMode: this.mode,
             }
         },
         computed: {
@@ -46,7 +47,7 @@
             }
         },
         mounted() {
-            if(this.mode === 'author-edit') {
+            if(this.myMode === 'author-edit') {
                 this.$el.querySelector('#title').innerHTML = '';
                 this.$el.querySelector('#author').innerHTML = '';
                 this.$el.querySelector('#article').innerHTML = '';
@@ -79,7 +80,7 @@
                 }
             },
             toPublish: function() {
-                if(this.mode === 'author-edit') {
+                if(this.myMode === 'author-edit') {
                     if(_.isEmpty(this.$el.querySelector('#title').innerHTML)) {
                         this.titleEmptyError = true;
                     }else if(_.isEmpty(this.$el.querySelector('#article').innerHTML)) {
@@ -103,8 +104,8 @@
                 }
             },
             toEdit: function() {
-                if(this.mode === 'author-read') {
-                    this.mode = 'author-edit';
+                if(this.myMode === 'author-read') {
+                    this.myMode = 'author-edit';
                     this.editable = true;
                 }
             },
@@ -119,8 +120,10 @@
             },
             changeAuthor: function(e) {
                 let code = e.keyCode || e.which;
-                // make arrow up to move caret to previous text input
-                if(code == 38) {
+                if(code == 13) {
+                    e.preventDefault();
+                } else if(code == 38) {
+                    // make arrow up to move caret to previous text input
                     e.preventDefault();
                     e.target.parentElement.previousElementSibling.focus();
                 }
@@ -133,7 +136,6 @@
                 // Backspace event
                 if(code == 8) {
                     if(article.textContent.length == 1) {
-                        console.log(123);
                         e.preventDefault();
                         article.textContent = '';
 //                        article.innerHtml = '';
