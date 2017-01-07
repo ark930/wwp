@@ -55,8 +55,8 @@
 //                p.appendChild(br);
 //                this.$el.querySelector('#article').appendChild(p);
             } else {
-                this.$el.querySelector('#title').innerHTML = this.title;
-                this.$el.querySelector('#author').innerHTML = this.author;
+                this.$el.querySelector('#title').textContent = this.title;
+                this.$el.querySelector('#author').textContent = this.author;
                 this.$el.querySelector('#article').innerHTML = this.content;
             }
         },
@@ -86,8 +86,8 @@
                         this.contentEmptyError = true;
                     } else {
                         Vue.http.post('/articles', {
-                            title: this.$el.querySelector('#title').innerHTML,
-                            author: this.$el.querySelector('#author').innerHTML,
+                            title: this.$el.querySelector('#title').textContent,
+                            author: this.$el.querySelector('#author').textContent,
                             content: this.$el.querySelector('#article').innerHTML,
                         })
                         .then((response) => {
@@ -112,30 +112,40 @@
                 console.log(e);
                 let code = e.keyCode || e.which;
                 if(code == 13 || code == 40) {
-                    // make enter, arrow down to tab behavior
-                    event.preventDefault();
-                    this.$el.querySelector('#article').focus();
+                    // make enter, arrow down to move caret to next text input
+                    e.preventDefault();
+                    e.target.nextElementSibling.focus();
                 }
             },
             changeAuthor: function(e) {
                 let code = e.keyCode || e.which;
-                if(code == 13) {
+                // make arrow up to move caret to previous text input
+                if(code == 38) {
                     e.preventDefault();
+                    e.target.parentElement.previousElementSibling.focus();
                 }
             },
-            changeContent: function(event) {
-                let article = this.$el.querySelector('#article');
+            changeContent: function(e) {
+                console.log(e, e.target.textContent);
+                let article = e.target;
 
-                if(_.isEmpty(this.myContent) && event.key.length == 1) {
-                    event.preventDefault();
+                let code = e.keyCode || e.which;
+                // Backspace event
+                if(code == 8) {
+                    if(article.textContent.length == 1) {
+                        console.log(123);
+                        e.preventDefault();
+                        article.textContent = '';
+//                        article.innerHtml = '';
+                    }
+                } else if(_.isEmpty(article.textContent) && e.key.length == 1) {
+                    e.preventDefault();
                     let p = document.createElement('p');
-                    p.innerText = event.key;
+                    p.innerText = e.key;
                     article.innerText = '';
                     article.appendChild(p);
                     this.putCursorAtEnd(article);
                 }
-
-                this.myContent = article.innerHTML;
             },
             titleFocus: function() {
                 if(this.titleEmptyError) {
