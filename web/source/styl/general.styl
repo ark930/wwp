@@ -1,0 +1,64 @@
+// animation
+*, *:before, *:after
+	transition 0.17s
+*
+	-webkit-font-smoothing antialiased
+	-moz-osx-font-smoothing antialiased
+	text-rendering: optimizeLegibility
+	&::selection
+		color clr_bg1
+		background clr_prime1
+	&::-moz-selection
+		color clr_bg1
+		background clr_prime1
+
+//default
+a
+	text-decoration none
+	color clr_content1
+	&:hover
+		cursor pointer
+		color clr_prime1
+
+body
+	background clr_bg1
+	color clr_content1
+// *
+	// height 100vh
+
+// .article
+// 	display block
+// 	width 100%
+
+[contenteditable="true"]
+	resize none
+	outline-style none
+	border none
+	background transparent
+	padding 0
+	marging 0
+
+	&:hover
+		cursor text
+	&:empty:before
+		content attr(placeholder)
+		display block //For Firefox
+		color clr_content3
+
+@keyframes shake
+	10%, 90%
+		transform translate3d(-1px, 0, 0)
+	20%, 80%
+		transform translate3d(2px, 0, 0)
+	30%, 50%, 70%
+		transform translate3d(-4px, 0, 0)
+	40%, 60%
+		transform translate3d(4px, 0, 0)
+
+.form-error
+	animation shake 0.82s cubic-bezier(.36,.07,.19,.97) both
+	transform translate3d(0, 0, 0)
+	backface-visibility hidden
+	perspective 1000px
+	&:empty:before
+		color clr_prime1

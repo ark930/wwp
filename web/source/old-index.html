@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	<title>A-Z.press</title>
+	<link rel="stylesheet" href="styl/article.css">
+</head>
+<body>
+
+<div id="app" class="articleview readmode">
+	<div class='articleComponent'>
+		<address class='info' v-if="is_read_only">
+			<time class="publishDate">{{ publish_date }}</time><!--
+		 --><span class="readTime">阅读 {{ read_min }} 分钟</span>
+		</address>
+
+		<h1 class='title' contenteditable="true" placeholder="标题" required='true'>b . b b b b&nbsp;</h1>
+		<article class="article" contenteditable="true" placeholder="你的故事" required='true'>{{ content }}</article>
+		<address class="info">
+			<div class="authorName" contenteditable="true" placeholder="作者（选填）">{{ author }}</div><!--
+		 --><span class="publishChannel">发布于&nbsp;<a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
+		</address>
+
+		<div class="actions">
+			<button class="btn-publish">发布</button>
+			<button class="btn-edit">编辑</button>
+		</div>
+	</div>
+</div>
+
+</body>
+
+<script src="js/vue-min.js"></script>
+<script src="js/main-min.js"></script>
+
+</html>

@@ -1,0 +1,1 @@
+var articlepage=new Vue({el:"#app",data:{publish_date:"",read_min:"",title:"",content:"",author:"",is_read_only:!0}});

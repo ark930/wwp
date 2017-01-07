@@ -1,0 +1,240 @@
+@import 'reset'
+@import 'value'
+@import 'general'
+
+// focus 显示 key
+
+info_font_color 		= clr_content2
+info_font_size	 		= fz_s1
+info_line_height 		= lh_m
+
+title_font_color 		= clr_content1
+title_font_size	 		= fz_l4
+title_line_height 		= lh_134
+
+article_font_color 		= clr_content1
+article_font_size 		= fz_m
+article_line_height 	= lh_m
+
+// block_padding 			= g*3
+// paragraph_padding 		= g*2
+
+// .articleview
+// 	.articleComponent
+// 		.info
+// 		.title
+// 		.article
+// 			.p
+// 			.img
+// 			.h1
+// 			.h2
+// 			.list
+// 			.code
+// 			.q
+// 			.video
+//			.table
+// 		.info
+// 		.actions
+// 			button.btn-publish
+// 			button.btn-edit
+
+.articleview
+	display flex
+	flex-direction column
+	justify-content center
+	min-height 100vh
+
+	.articleComponent
+		z-index 1
+		margin 4*g auto
+
+		&>*
+			margin 2*g 0
+
+		.info
+			font-style normal
+			font-size info_font_size
+			line-height info_line_height
+			color info_font_color
+			letter-spacing (g/16)
+			min-height info_line_height
+		.title
+			font-size title_font_size
+			line-height title_line_height
+			font-weight bold
+			margin-left -0.125*g
+			min-height title_line_height
+		.article
+			font-size article_font_size
+			line-height article_line_height
+			min-height article_line_height
+
+	.actions
+		display flex
+		flex-direction row
+		margin-left -0.5*g
+		position relative
+		width 100%
+		button
+			border solid clr_content3 1px
+			border-radius 99px;
+			padding g 1.5*g
+			min-width 10*g
+			font-size fz_s1
+			background-color transparent
+			&:hover:enabled
+				cursor pointer
+				background clr_bg2
+			&:active:enabled
+				background clr_content3
+			&:disabled
+				opacity 0.5
+				cursor not-allowed
+
+.articleview.editmode
+
+	.articleComponent
+		font-family monospace, monospace
+		.info>:not(.authorName)
+			display none
+		// .article
+		// font-family monospace
+		// .info
+		// .title
+		// .article
+		// font-size fz_m
+		// font article_font_size/article_line_height monospace
+
+		// article size
+		fun(minw)
+			@media (min-width: minw)
+				quantity = ceil( minw/16 ) - 3
+				width article_font_size * quantity
+		fun(320px)
+		fun(360px)
+		fun(375px)
+		fun(411px)
+		fun(480px)
+		fun(540px)
+		fun(600px)
+		// fun(600px, 32)
+		// fun(768px, 32)
+		// fun(1280px, 33)
+		.actions
+			.btn-edit
+				display none
+
+.articleview.readmode
+
+	.articleComponent
+		font-family -apple-system, 'PingFang SC', 'Source Sans Pro', 'Helvetica Neue', "Microsoft YaHei", Arial, serif
+		.info
+			a
+				display inline-block
+				&:hover
+					color clr_prime1
+			.authorName, .publishDate, .publishChannel, .readTime
+				display inline-block
+			.readTime, .publishChannel
+				&:before
+					content " · "
+					content ""
+					bullet_size = g/4
+					totalwidth = info_font_size
+					float left
+					display inline-block
+					line-height info_line_height
+					margin ((info_line_height - bullet_size)/2) ((totalwidth - bullet_size)/2)
+					width bullet_size
+					height bullet_size
+					border-radius 99px
+					background clr_content3
+			&:last-of-type
+				&:before
+					content " - "
+					margin 2*g auto
+					color clr_content3
+					display block
+
+		.article
+			p
+				margin 2*g 0
+			ul, ol
+				// list-style-type none
+				list-style-position outside
+				padding-left article_font_size * 2
+				li
+					line-height article_line_height
+					// totalwidth = article_font_size
+					// &::before
+					// 	content " · "
+					// 	bullet_size = g/2
+					// 	background-color red
+					// 	width bullet_size
+					// 	height bullet_size
+					// 	border-radius 99px
+					// 	background clr_content1
+					// 	font-size 0
+					// 	margin-left -1 * totalwidth
+					// 	display inline-block
+					// 	line-height article_line_height
+					// 	margin ((article_line_height - bullet_size)/2) ((totalwidth - bullet_size)/2)
+			a
+				&:not(:only-child)
+					color clr_content1
+					border-bottom clr_prime1 dotted 1px
+					&:hover
+						color clr_prime1
+						border-bottom clr_prime1 dotted 1px
+						// &:after
+						// 	content " go "
+						// 	position absolute
+						// 	margin-top -2*g
+						// 	// top 4px
+				&:only-child
+					color clr_prime1
+					border-bottom alpha(clr_prime1, 0) solid 2px
+					&:hover
+						border-bottom clr_prime1 solid 2px
+			q, blockquote
+				// font-family sans
+				display block
+				border-left solid (g/2) clr_content3
+				padding-left g
+
+			// q
+			// 	quotes: "“" "”" "‘" "’"
+			q:before
+				    content: ''//open-quote
+			q:after
+				    content: ''//close-quote
+
+		// article size
+		fun(minw)
+			@media (min-width: minw)
+				quantity = ceil( minw/16 ) - 3
+				max-width article_font_size * quantity
+		fun(320px)
+		fun(360px)
+		fun(375px)
+		fun(411px)
+		fun(480px)
+		fun(540px)
+		fun(600px)
+		// fun(minw, chara_quantity)
+		// 	@media (min-width: minw)
+		// 		max-width article_font_size * chara_quantity
+		// fun(320px, 19)
+		// fun(360px, 20)
+		// fun(375px, 21)
+		// fun(411px, 22)
+		// fun(480px, 24)
+		// fun(540px, 28)
+		// fun(600px, 32)
+		// fun(768px, 32)
+		// fun(1280px, 33)
+		.actions
+			.btn-publish
+				display none
+
+
