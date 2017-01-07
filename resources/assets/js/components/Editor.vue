@@ -56,8 +56,8 @@
 //                p.appendChild(br);
 //                this.$el.querySelector('#article').appendChild(p);
             } else {
-                this.$el.querySelector('#title').textContent = this.title;
-                this.$el.querySelector('#author').textContent = this.author;
+                this.$el.querySelector('#title').textContent = decodeURI(this.title);
+                this.$el.querySelector('#author').textContent = decodeURI(this.author);
                 this.$el.querySelector('#article').innerHTML = this.content;
             }
         },
@@ -87,8 +87,8 @@
                         this.contentEmptyError = true;
                     } else {
                         Vue.http.post('/articles', {
-                            title: this.$el.querySelector('#title').textContent,
-                            author: this.$el.querySelector('#author').textContent,
+                            title: encodeURI(this.$el.querySelector('#title').textContent),
+                            author: encodeURI(this.$el.querySelector('#author').textContent),
                             content: this.$el.querySelector('#article').innerHTML,
                         })
                         .then((response) => {
