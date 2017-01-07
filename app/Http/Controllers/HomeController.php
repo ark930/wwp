@@ -46,9 +46,8 @@ class HomeController extends Controller
             'author' => '',
             'content' => '',
             'updated_at' => '',
-            'read_time' => '',
-            'show_edit_button' => 'true',
-            'is_read_only' => false,
+            'mode' => 'author-edit',
+            'read_time' => 0,
         ]);
     }
 

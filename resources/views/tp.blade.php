@@ -14,21 +14,11 @@
 </head>
 <body>
     <div id="app">
-        <editor title="{{ $title }}" author="{{ $author }}" publish_date="{{ $updated_at }}" content="{{ $content }}"
-                show_edit_button="{{ $show_edit_button }}" is_read_only="{{ $is_read_only }}"
-                read_min="{{ $read_time }}"></editor>
+        <editor title="{{ $title }}" author="{{ $author }}" content="{{ $content }}"
+                mode="{{ $mode }}" read_min="{{ $read_time }}" publish_date="{{ $updated_at }}"></editor>
     </div>
 </body>
 
-{{--<script src="js/vue-min.js"></script>--}}
-{{--<script src="js/main-min.js"></script>--}}
 <script src="{{ elixir('js/app.js') }}"></script>
-{{--<script src="{{ elixir('js/jquery.min.js') }}"></script>--}}
-{{--<script src="{{ elixir('js/jquery.selection.min.js') }}"></script>--}}
-{{--<script src="{{ elixir('js/autosize.min.js') }}"></script>--}}
-{{--<script src="{{ elixir('js/load-image.all.min.js') }}"></script>--}}
-{{--<script src="{{ elixir('js/quill.min.js') }}"></script>--}}
-{{--<script src="{{ elixir('js/core.min.js') }}"></script>--}}
-
 
 </html>

@@ -59,14 +59,14 @@ class ArticleController extends Controller
         $user = Auth::user();
         $article = new Article();
         $article['tag'] = strtolower(str_random(8));
-        $article['status'] = Article::STATUS_DRAFT;
+        $article['status'] = Article::STATUS_PUBLISHED;
         $article['author'] = $author;
         $user->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
         $articleVersion->save();
-        $article->draftVersion()->associate($articleVersion);
+        $article->publishedVersion()->associate($articleVersion);
         $article->save();
 
         $data = $this->filterArticleData($article);
@@ -255,28 +255,37 @@ class ArticleController extends Controller
         $article = $this->findArticleByTag($tag);
         $data = $this->filterArticleData($article);
 
-        $data['show_edit_button'] = 'false';
-        $data['is_read_only'] = true;
+        $data['mode'] = 'audience-read';
+        $user = Auth::user();
+        if(!empty($user)) {
+            $articleUser = $article->writer;
+            if($user['id'] === $articleUser['id']) {
+                $data['mode'] = 'author-read';
+            }
+        }
 
         return view('tp', $data);
     }
 
-    private function updateArticle(Request $request, $id) : Article
+    private function updateArticle(Request $request, $tag) : Article
     {
-        $article = $this->findArticle($id);
+        $article = $this->findArticleByTag($tag);
 
         $title = $request->input('title');
         $content = $request->input('content');
+        $author = $request->input('author');
 
+        $article['author'] = $author;
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['content'] = $content;
 
-        $status = $article['status'];
-        if($status === Article::STATUS_PUBLISHED) {
-            $article['status'] = Article::STATUS_PUBLISHED_WITH_DRAFT;
-        }
-        $article->draftVersion()->associate($articleVersion);
+//        $status = $article['status'];
+//        if($status === Article::STATUS_PUBLISHED) {
+//            $article['status'] = Article::STATUS_PUBLISHED_WITH_DRAFT;
+//        }
+        $article->publishedVersion()->associate($articleVersion);
+//        $article->draftVersion()->associate($articleVersion);
         $article->save();
 
         return $article;
