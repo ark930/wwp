@@ -164,7 +164,7 @@ class AzArticleController extends Controller
             'cover_url' => $version['cover_url'],
             'title' => $version['title'],
             'content' => $version['content'],
-            'description' => '',
+            'description' => $version['title'],
             'read_time' => $this->readTime($version['content']),
             'status' => $article['status'],
             'created_at' => strval($article['created_at']),
