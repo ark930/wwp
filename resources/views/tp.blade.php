@@ -16,8 +16,14 @@
 </head>
 <body>
     <div id="app">
-        <editor title="{{ $title }}" author="{{ $author }}" content="{{ $content }}"
-                mode="{{ $mode }}" read_min="{{ $read_time }}" publish_date="{{ $created_at }}"></editor>
+        <editor title="{{ $title }}"
+                author="{{ $author }}"
+                html_content="{{ $html_content }}"
+                text_content="{{ $text_content }}"
+                mode="{{ $mode }}"
+                read_min="{{ $read_time }}"
+                publish_date="{{ $created_at }}">
+        </editor>
     </div>
 </body>
 

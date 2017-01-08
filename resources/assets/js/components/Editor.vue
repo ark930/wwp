@@ -10,7 +10,7 @@
             <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable"
                      placeholder="你的故事" required='true' @focus="articleFocus()" @keydown="keydownContent($event)"
                      @keyup="keyupContent($event)">
-                {{ content }}
+                {{ html_content }}
             </article>
             <address class="info">
                 <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName" @keydown="changeAuthor($event)">
@@ -27,7 +27,14 @@
 
 <script>
     export default {
-        props: ['title', 'author', 'content', 'read_min', 'publish_date', 'mode'],
+        props: [
+            'title',
+            'author',
+            'html_content',
+            'text_content',
+            'read_min',
+            'publish_date',
+            'mode'],
         data: function() {
             return {
                 editable: this.mode === 'author-edit',
@@ -59,7 +66,7 @@
             } else {
                 this.$el.querySelector('#title').textContent = decodeURI(this.title);
                 this.$el.querySelector('#author').textContent = decodeURI(this.author);
-                this.$el.querySelector('#article').innerHTML = this.content;
+                this.$el.querySelector('#article').innerHTML = this.html_content;
             }
         },
         methods: {
@@ -99,7 +106,8 @@
                         Vue.http.post(url, {
                             title: encodeURI(this.$el.querySelector('#title').textContent),
                             author: encodeURI(this.$el.querySelector('#author').textContent),
-                            content: this.$el.querySelector('#article').innerHTML,
+                            html_content: this.$el.querySelector('#article').innerHTML,
+                            text_content: this.$el.querySelector('#article').textContent,
                         })
                         .then((response) => {
                             console.log('success', response);

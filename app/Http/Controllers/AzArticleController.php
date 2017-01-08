@@ -32,7 +32,8 @@ class AzArticleController extends Controller
         return view('tp', [
             'title' => 'A-Z.press',
             'author' => '',
-            'content' => '',
+            'html_content' => '',
+            'text_content' => '',
             'description' => '开箱即写，发布到任何地方',
             'created_at' => '',
             'mode' => self::MODE_AUTHOR_EDIT,
@@ -42,8 +43,16 @@ class AzArticleController extends Controller
 
     public function publish(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'html_content' => 'required',
+            'text_content' => 'required',
+            'author' => 'required',
+        ]);
+
         $title = $request->input('title');
-        $content = $request->input('content');
+        $htmlContent = $request->input('html_content');
+        $textContent = $request->input('text_content');
         $author = $request->input('author');
 
         $user = Auth::user();
@@ -52,13 +61,15 @@ class AzArticleController extends Controller
         }
 
         $article = new Article();
-        $article['tag'] = strtolower(str_random(8));
+        $article['tag'] = $this->generateTag();
         $article['status'] = Article::STATUS_PUBLISHED;
         $article['author'] = $author;
         $user->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
-        $articleVersion['content'] = $content;
+        $articleVersion['html_content'] = $htmlContent;
+        $articleVersion['text_content'] = $textContent;
+        $articleVersion['description'] = $title;
         $articleVersion->save();
         $article->publishedVersion()->associate($articleVersion);
         $article->save();
@@ -88,6 +99,13 @@ class AzArticleController extends Controller
 
     public function editByTag(Request $request, $tag)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'html_content' => 'required',
+            'text_content' => 'required',
+            'author' => 'required',
+        ]);
+
         $user = Auth::user();
         if(empty($user)) {
             throw new AuthenticationException();
@@ -117,13 +135,16 @@ class AzArticleController extends Controller
     private function updateArticle(Request $request, Article $article) : Article
     {
         $title = $request->input('title');
-        $content = $request->input('content');
+        $htmlContent = $request->input('html_content');
+        $textContent = $request->input('text_content');
         $author = $request->input('author');
 
         $article['author'] = $author;
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
-        $articleVersion['content'] = $content;
+        $articleVersion['html_content'] = $htmlContent;
+        $articleVersion['text_content'] = $textContent;
+        $articleVersion['description'] = $title;
         $articleVersion->save();
         $article->publishedVersion()->associate($articleVersion);
         $article->save();
@@ -158,17 +179,16 @@ class AzArticleController extends Controller
         }
 
         $data = [
-            'id' => $article['id'],
             'tag' => $article['tag'],
             'author' => $article['author'],
-            'cover_url' => $version['cover_url'],
+//            'cover_url' => $version['cover_url'],
             'title' => $version['title'],
-            'content' => $version['content'],
+            'html_content' => $version['html_content'],
+            'text_content' => $version['text_content'],
             'description' => $version['title'],
-            'read_time' => $this->readTime($version['content']),
-            'status' => $article['status'],
+            'read_time' => $this->readTime($version['text_content']),
+//            'status' => $article['status'],
             'created_at' => strval($article['created_at']),
-            'updated_at' => strval($article['updated_at']),
         ];
 
         return $data;
@@ -183,5 +203,18 @@ class AzArticleController extends Controller
         $count = mb_strlen($content, 'UTF-8');
 
         return ceil($count / 500);
+    }
+
+    private function generateTag()
+    {
+        for($i = 0; $i < 5; $i++) {
+            $tag = strtolower(str_random(8));
+            $article = Article::where('tag', $tag)->first();
+            if(empty($article)) {
+                return $tag;
+            }
+        }
+
+        throw new BadRequestException('TAG 生成失败');
     }
 }
