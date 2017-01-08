@@ -34,7 +34,7 @@ class AzArticleController extends Controller
             'author' => '',
             'content' => '',
             'description' => '开箱即写，发布到任何地方',
-            'updated_at' => '',
+            'created_at' => '',
             'mode' => self::MODE_AUTHOR_EDIT,
             'read_time' => 0,
         ]);
