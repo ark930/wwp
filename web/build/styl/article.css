@@ -160,6 +160,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  word-break: break-word;
+  hyphens: auto;
 }
 *::selection {
   color: #fafafa;
@@ -269,7 +271,6 @@ body {
   min-height: 100vh;
 }
 .articleview .articleComponent {
-  z-index: 1;
   margin: 2rem auto;
 }
 .articleview .articleComponent>* {
@@ -298,7 +299,7 @@ body {
 .articleview .articleComponent .article>* {
   margin: 1rem 0;
 }
-.articleview .actions {
+.articleview .articleComponent .actions {
   display: flex;
   flex-direction: row;
   margin-left: -0.25rem;
@@ -306,27 +307,32 @@ body {
   width: 100%;
   margin-top: 2rem;
 }
-.articleview .actions button {
+.articleview .articleComponent .actions button {
   border: solid #afb3b6 1px;
   border-radius: 99px;
   padding: 0.5rem 0.75rem;
   min-width: 5rem;
   font-size: 0.875rem;
   background-color: transparent;
+  color: #44484b;
 }
-.articleview .actions button:hover:enabled {
+.articleview .articleComponent .actions button:hover:enabled {
   cursor: pointer;
   background: #f4f5f5;
 }
-.articleview .actions button:active:enabled {
+.articleview .articleComponent .actions button:active:enabled {
   background: #afb3b6;
 }
-.articleview .actions button:disabled {
-  opacity: 0.5;
+.articleview .articleComponent .actions button:disabled {
+  color: #afb3b6;
+  border-color: rgba(175,179,182,0.5);
   cursor: not-allowed;
 }
 .articleview[mode*='edit'] .articleComponent {
   font-family: monospace, monospace;
+}
+.articleview[mode*='edit'] .articleComponent .info:first-child {
+  display: none;
 }
 .articleview[mode*='edit'] .articleComponent .info>:not(.authorName) {
   display: none;
