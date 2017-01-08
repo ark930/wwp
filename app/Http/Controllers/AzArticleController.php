@@ -48,12 +48,14 @@ class AzArticleController extends Controller
             'html_content' => 'required',
             'text_content' => 'required',
             'author' => 'required',
+            'description' => 'required',
         ]);
 
         $title = $request->input('title');
         $htmlContent = $request->input('html_content');
         $textContent = $request->input('text_content');
         $author = $request->input('author');
+        $description = $request->input('description');
 
         $user = Auth::user();
         if(empty($user)) {
@@ -69,7 +71,7 @@ class AzArticleController extends Controller
         $articleVersion['title'] = $title;
         $articleVersion['html_content'] = $htmlContent;
         $articleVersion['text_content'] = $textContent;
-        $articleVersion['description'] = $title;
+        $articleVersion['description'] = $description;
         $articleVersion->save();
         $article->publishedVersion()->associate($articleVersion);
         $article->save();
@@ -104,6 +106,7 @@ class AzArticleController extends Controller
             'html_content' => 'required',
             'text_content' => 'required',
             'author' => 'required',
+            'description' => 'required',
         ]);
 
         $user = Auth::user();
@@ -138,13 +141,14 @@ class AzArticleController extends Controller
         $htmlContent = $request->input('html_content');
         $textContent = $request->input('text_content');
         $author = $request->input('author');
+        $description = $request->input('description');
 
         $article['author'] = $author;
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['html_content'] = $htmlContent;
         $articleVersion['text_content'] = $textContent;
-        $articleVersion['description'] = $title;
+        $articleVersion['description'] = $description;
         $articleVersion->save();
         $article->publishedVersion()->associate($articleVersion);
         $article->save();
@@ -185,7 +189,7 @@ class AzArticleController extends Controller
             'title' => $version['title'],
             'html_content' => $version['html_content'],
             'text_content' => $version['text_content'],
-            'description' => $version['title'],
+            'description' => $version['description'],
             'read_time' => $this->readTime($version['text_content']),
 //            'status' => $article['status'],
             'created_at' => strval($article['created_at']),

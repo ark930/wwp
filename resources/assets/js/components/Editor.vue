@@ -103,11 +103,18 @@
                         } else {
                             url = '/articles';
                         }
+
+                        let article = this.$el.querySelector('#article');
+                        let description = '';
+                        if(article.firstChild) {
+                            description = article.firstChild.textContent;
+                        }
                         Vue.http.post(url, {
                             title: encodeURI(this.$el.querySelector('#title').textContent),
                             author: encodeURI(this.$el.querySelector('#author').textContent),
-                            html_content: this.$el.querySelector('#article').innerHTML,
-                            text_content: this.$el.querySelector('#article').textContent,
+                            html_content: article.innerHTML,
+                            text_content: article.textContent,
+                            description: description,
                         })
                         .then((response) => {
                             console.log('success', response);
