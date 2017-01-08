@@ -22,7 +22,7 @@ Route::group(['middleware' => ['cors']], function() {
     Route::post('verifycode', 'UserController@verifyCode');
 
 //    Route::group(['middleware' => ['auth']], function () {
-        Route::resource('articles', 'ArticleController');
+//        Route::resource('articles', 'ArticleController');
         Route::post('articles/{article_id}/publish', 'ArticleController@publish');
         Route::post('articles/{article_id}/unpublish', 'ArticleController@unpublish');
         Route::post('articles/{article_id}/trash', 'ArticleController@trash');
@@ -49,15 +49,10 @@ Route::group(['middleware' => ['cors']], function() {
 
 
 //Route::get('/tp', 'HomeController@tp');
-Route::get('/', 'HomeController@tp');
-Route::post('/check', 'HomeController@check');
-Route::post('/save', 'HomeController@save');
-Route::get('/test', function() {
-    return view('home');
-});
-
-Route::get('a/{tag}', 'ArticleController@read');
-Route::post('a/{tag}', 'ArticleController@editByTag');
+Route::get('/', 'AzArticleController@index');
+Route::post('articles', 'AzArticleController@publish');
+Route::get('a/{tag}', 'AzArticleController@read');
+Route::post('a/{tag}', 'AzArticleController@editByTag');
 
 Route::get('v1/charges/{id}/notify', 'HomeController@notify');
 Route::post('v1/charges/{id}/notify', 'HomeController@notify');
