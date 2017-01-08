@@ -15,7 +15,7 @@
             <address class="info">
                 <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName" @keydown="changeAuthor($event)">
                     {{ author }}
-                </div><span class="publishChannel">发布于 <a href="http://www.a-z.press" target="blank">A-Z.press</a></span>
+                </div><span class="publishChannel">发布于 <a href="http://a-z.press" target="blank">A-Z.press</a></span>
             </address>
             <div class="actions">
                 <button class="btn-publish" @click="toPublish">发布</button>
