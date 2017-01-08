@@ -47,8 +47,8 @@ class AzArticleController extends Controller
             'title' => 'required',
             'html_content' => 'required',
             'text_content' => 'required',
-            'author' => 'required',
-            'description' => 'required',
+            'author' => 'nullable',
+            'description' => 'nullable',
         ]);
 
         $title = $request->input('title');
@@ -56,6 +56,14 @@ class AzArticleController extends Controller
         $textContent = $request->input('text_content');
         $author = $request->input('author');
         $description = $request->input('description');
+
+        if(empty($author)) {
+            $author = "";
+        }
+
+        if(empty($description)) {
+            $description = "";
+        }
 
         $user = Auth::user();
         if(empty($user)) {
@@ -105,8 +113,8 @@ class AzArticleController extends Controller
             'title' => 'required',
             'html_content' => 'required',
             'text_content' => 'required',
-            'author' => 'required',
-            'description' => 'required',
+            'author' => 'nullable',
+            'description' => 'nullable',
         ]);
 
         $user = Auth::user();
@@ -142,6 +150,14 @@ class AzArticleController extends Controller
         $textContent = $request->input('text_content');
         $author = $request->input('author');
         $description = $request->input('description');
+
+        if(empty($author)) {
+            $author = "";
+        }
+
+        if(empty($description)) {
+            $description = "";
+        }
 
         $article['author'] = $author;
         $articleVersion = new ArticleVersion();
@@ -190,7 +206,7 @@ class AzArticleController extends Controller
             'html_content' => $version['html_content'],
             'text_content' => $version['text_content'],
             'description' => $version['description'],
-            'read_time' => $this->readTime($version['text_content']),
+            'read_time' => $this->readTime(urldecode($version['text_content'])),
 //            'status' => $article['status'],
             'created_at' => strval($article['created_at']),
         ];

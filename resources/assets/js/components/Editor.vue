@@ -1,19 +1,22 @@
 <template>
-    <div v-bind:mode="myMode" class="articleview">
+    <div :mode="myMode" class="articleview">
         <div class='articleComponent'>
             <address class='info'>
                 <time class="publishDate">{{ publish_date }}</time><span class="readTime">阅读 {{ read_min }} 分钟</span>
             </address>
-            <h1 id="title" class="title" v-bind:class="titleError" v-bind:contenteditable="editable" placeholder="标题" required="true" @focus="titleFocus()" @keydown="changeTitle($event)">
+            <h1 id="title" class="title" :class="titleError" :contenteditable="editable"
+                placeholder="标题" required="true" @focus="titleFocus" @paste="pastePlantText"
+                @keydown="changeTitle">
                 {{ title }}
             </h1>
-            <article id="article" class="article" v-bind:class="contentError" v-bind:contenteditable="editable"
-                     placeholder="你的故事" required='true' @focus="articleFocus()" @keydown="keydownContent($event)"
-                     @keyup="keyupContent($event)">
+            <article id="article" class="article" :class="contentError" :contenteditable="editable"
+                     placeholder="你的故事" required='true' @focus="articleFocus" @paste="pastePlantText"
+                     @keydown="keydownContent" @keyup="keyupContent">
                 {{ html_content }}
             </article>
             <address class="info">
-                <div id="author" v-bind:contenteditable="editable" placeholder="作者（选填）" class="authorName" @keydown="changeAuthor($event)">
+                <div id="author" :contenteditable="editable" placeholder="作者（选填）" class="authorName"
+                     @paste="pastePlantText" @keydown="changeAuthor">
                     {{ author }}
                 </div><span class="publishChannel">发布于 <a href="http://a-z.press" target="blank">A-Z.press</a></span>
             </address>
@@ -107,21 +110,21 @@
                         let article = this.$el.querySelector('#article');
                         let description = '';
                         if(article.firstChild) {
-                            description = article.firstChild.textContent;
+                            description = encodeURI(article.firstChild.textContent);
                         }
                         Vue.http.post(url, {
                             title: encodeURI(this.$el.querySelector('#title').textContent),
                             author: encodeURI(this.$el.querySelector('#author').textContent),
                             html_content: article.innerHTML,
-                            text_content: article.textContent,
+                            text_content: encodeURI(article.textContent),
                             description: description,
                         })
                         .then((response) => {
-                            console.log('success', response);
+//                            console.log('success', response);
                             const body = response.body;
                             location.replace(body.show_url);
                         }, (response) => {
-                            console.log('error', response);
+//                            console.log('error', response);
                             const body = response.body;
 //                            alert(_.values(body)[0]);
                         });
@@ -136,7 +139,7 @@
                 }
             },
             changeTitle: function(e) {
-                console.log(e);
+//                console.log(e);
                 let code = e.keyCode || e.which;
                 if(code == 13 || code == 40) {
                     // make enter, arrow down to move caret to next text input
@@ -154,7 +157,16 @@
                     e.target.parentElement.previousElementSibling.focus();
                 }
             },
+            pastePlantText: function(e) {
+                // only paste plain text to input field
+                e.preventDefault();
+                // get text representation of clipboard
+                let text = e.clipboardData.getData("text/plain");
+                // insert text manually
+                document.execCommand("insertHTML", false, text);
+            },
             keydownContent: function(e) {
+//                console.log('key down');
 //                let code = e.keyCode || e.which;
 //                // Backspace event
 //                if(code == 8) {
@@ -176,6 +188,7 @@
 //                }
             },
             keyupContent: function(e) {
+//                console.log('key up');
 //                let article = e.target;
 //                console.log(article, article.innerHTML);
 //                if(_.isEmpty(article.innerHTML)) {
