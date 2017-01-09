@@ -165,11 +165,11 @@ body {
 }
 *::selection {
   color: #fafafa;
-  background: #ff5638;
+  background: #ff4524;
 }
 *::-moz-selection {
   color: #fafafa;
-  background: #ff5638;
+  background: #ff4524;
 }
 a {
   text-decoration: none;
@@ -177,7 +177,7 @@ a {
 }
 a:hover {
   cursor: pointer;
-  color: #ff5638;
+  color: #ff4524;
 }
 body {
   background: #fafafa;
@@ -206,7 +206,7 @@ body {
   perspective: 1000px;
 }
 .form-error:empty:before {
-  color: #ff5638;
+  color: #ff4524;
 }
 @-moz-keyframes shake {
   10%, 90% {
@@ -329,7 +329,7 @@ body {
   cursor: not-allowed;
 }
 .articleview[mode*='edit'] .articleComponent {
-  font-family: monospace, monospace;
+  font-family: SuisseMono-Regular, georgia, monospace, monospace;
 }
 .articleview[mode*='edit'] .articleComponent .info:first-child {
   display: none;
@@ -382,7 +382,7 @@ body {
   display: inline-block;
 }
 .articleview[mode*='read'] .articleComponent .info a:hover {
-  color: #ff5638;
+  color: #ff4524;
 }
 .articleview[mode*='read'] .articleComponent .info>* {
   display: inline-block;
@@ -408,7 +408,7 @@ body {
 }
 .articleview[mode*='read'] .articleComponent .info .authorName:empty:before {
   display: inline-block;
-  content: "匿名用户";
+  content: attr(data_anonymous);
   color: #afb3b6;
 }
 .articleview[mode*='read'] .articleComponent .article ul,
@@ -422,18 +422,18 @@ body {
 }
 .articleview[mode*='read'] .articleComponent .article a:not(:only-child) {
   color: #44484b;
-  border-bottom: #ff5638 dotted 1px;
+  border-bottom: #ff4524 dotted 1px;
 }
 .articleview[mode*='read'] .articleComponent .article a:not(:only-child):hover {
-  color: #ff5638;
-  border-bottom: #ff5638 dotted 1px;
+  color: #ff4524;
+  border-bottom: #ff4524 dotted 1px;
 }
 .articleview[mode*='read'] .articleComponent .article a:only-child {
-  color: #ff5638;
-  border-bottom: rgba(255,86,56,0) solid 2px;
+  color: #ff4524;
+  border-bottom: rgba(255,69,36,0) solid 2px;
 }
 .articleview[mode*='read'] .articleComponent .article a:only-child:hover {
-  border-bottom: #ff5638 solid 2px;
+  border-bottom: #ff4524 solid 2px;
 }
 .articleview[mode*='read'] .articleComponent .article q,
 .articleview[mode*='read'] .articleComponent .article blockquote {
