@@ -154,4 +154,9 @@ class User extends Authenticatable
         $this['last_login_at'] = $now;
         $this->save();
     }
+
+    public function isAdmin()
+    {
+        return $this['is_admin'] == 1;
+    }
 }

@@ -51,8 +51,11 @@ Route::group(['middleware' => ['cors']], function() {
 //Route::get('/tp', 'HomeController@tp');
 Route::get('/', 'AzArticleController@index');
 Route::post('articles', 'AzArticleController@publish');
-Route::get('a/{tag}', 'AzArticleController@read');
+Route::get('a/{tag}', 'AzArticleController@read')->name('article_read');
 Route::post('a/{tag}', 'AzArticleController@editByTag');
 
 Route::get('v1/charges/{id}/notify', 'HomeController@notify');
 Route::post('v1/charges/{id}/notify', 'HomeController@notify');
+
+
+Route::get('admin/articles', 'AdminController@index');
