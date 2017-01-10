@@ -54,15 +54,29 @@ class AzArticleController extends Controller
             $description = "";
         }
 
-        if($request->session()->has('device_id')) {
-            $device = Device::find($request->session()->get('device_id'));
-            if(empty($device)) {
+        if(Auth::check()) {
+            $user = Auth::user();
+            if(!empty($user->devices)) {
+                $device = $user->devices->first;
+                if(empty($device)) {
+                    $device = new Device();
+                    $device->save();
+                }
+            } else {
                 $device = new Device();
                 $device->save();
             }
         } else {
-            $device = new Device();
-            $device->save();
+            if($request->session()->has('device_id')) {
+                $device = Device::find($request->session()->get('device_id'));
+                if(empty($device)) {
+                    $device = new Device();
+                    $device->save();
+                }
+            } else {
+                $device = new Device();
+                $device->save();
+            }
         }
         $request->session()->put('device_id', $device['id']);
 
