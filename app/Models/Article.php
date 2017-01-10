@@ -18,10 +18,15 @@ class Article extends Model
         'deleted_at',
     ];
 
-    public function writer()
+    public function device()
     {
-        return $this->belongsTo('App\Models\User', 'user_id');
+        return $this->belongsTo('App\Models\Device');
     }
+
+//    public function writer()
+//    {
+//        return $this->belongsTo('App\Models\User', 'user_id');
+//    }
 
     public function comments()
     {

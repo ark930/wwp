@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\BadRequestException;
 use App\Models\Article;
 use App\Models\ArticleVersion;
-use App\Models\User;
+use App\Models\Device;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -19,16 +19,6 @@ class AzArticleController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
-        if(empty($user)) {
-            $user = User::create([
-                'tel' => str_random(10),
-            ]);
-
-            Auth::guard()->login($user);
-            $request->session()->regenerate();
-        }
-
         return view('tp', [
             'title' => 'A-Z.press',
             'author' => '',
@@ -60,21 +50,27 @@ class AzArticleController extends Controller
         if(empty($author)) {
             $author = "";
         }
-
         if(empty($description)) {
             $description = "";
         }
 
-        $user = Auth::user();
-        if(empty($user)) {
-            throw new AuthenticationException();
+        if($request->session()->has('device_id')) {
+            $device = Device::find($request->session()->get('device_id'));
+            if(empty($device)) {
+                $device = new Device();
+                $device->save();
+            }
+        } else {
+            $device = new Device();
+            $device->save();
         }
+        $request->session()->put('device_id', $device['id']);
 
         $article = new Article();
         $article['tag'] = $this->generateTag();
         $article['status'] = Article::STATUS_PUBLISHED;
         $article['author'] = $author;
-        $user->articles()->save($article);
+        $device->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
         $articleVersion['html_content'] = $htmlContent;
@@ -90,16 +86,24 @@ class AzArticleController extends Controller
         return response()->json($data);
     }
 
-    public function read($tag)
+    public function read(Request $request, $tag)
     {
         $article = $this->findArticleByTag($tag);
         $data = $this->filterArticleData($article);
 
         $data['mode'] = self::MODE_AUDIENCE_READ;
-        $user = Auth::user();
-        if(!empty($user)) {
-            $articleUser = $article->writer;
-            if($user['id'] === $articleUser['id']) {
+
+        if($request->session()->has('device_id')) {
+            $device = Device::find($request->session()->get('device_id'));
+            $articleDevice = $article->device;
+            if($device['id'] === $articleDevice['id']) {
+                $data['mode'] = self::MODE_AUTHOR_READ;
+            }
+        } else if(Auth::check()) {
+            $user = Auth::user();
+            $device = $user->devices->first;
+            $articleDevice = $article->device;
+            if($device['id'] === $articleDevice['id']) {
                 $data['mode'] = self::MODE_AUTHOR_READ;
             }
         }
@@ -117,14 +121,30 @@ class AzArticleController extends Controller
             'description' => 'nullable',
         ]);
 
-        $user = Auth::user();
-        if(empty($user)) {
-            throw new AuthenticationException();
-        }
-
         $article = $this->findArticleByTag($tag);
-        $articleUser = $article->writer;
-        if($user['id'] != $articleUser['id']) {
+
+        if($request->session()->has('device_id')) {
+            $device = Device::find($request->session()->get('device_id'));
+            if (!empty($device)) {
+                $articleDevice = $article->device;
+                if($device['id'] !== $articleDevice['id']) {
+                    throw new AuthenticationException();
+                }
+            } else {
+                throw new AuthenticationException();
+            }
+        } else if(Auth::check()) {
+            $user = Auth::user();
+            $device = $user->devices->first;
+            if (!empty($device)) {
+                $articleDevice = $article->device;
+                if($device['id'] !== $articleDevice['id']) {
+                    throw new AuthenticationException();
+                }
+            } else {
+                throw new AuthenticationException();
+            }
+        } else {
             throw new AuthenticationException();
         }
 
