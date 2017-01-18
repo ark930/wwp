@@ -17,7 +17,7 @@ class AdminController extends Controller
         $articles = DB::table(DB::raw('articles as a'))
             ->join(DB::raw('article_versions as v'), 'a.publish_version_id', '=', 'v.id')
             ->join(DB::raw('devices as d'), 'a.device_id', '=', 'd.id')
-            ->select('v.title', 'a.tag', 'a.created_at, d.tel as device')
+            ->select(DB::raw('v.title, a.tag, a.created_at, d.tel as device'))
             ->orderBy('a.created_at', 'DESC')
             ->paginate(10);
 
