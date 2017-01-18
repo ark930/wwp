@@ -35,8 +35,8 @@ class AdminController extends Controller
         $this->isAdmin($request);
 
         $articles = DB::table(DB::raw('devices as d'))
-            ->select(DB::raw('d.tel as device, created_at'))
-            ->orderBy('a.created_at', 'DESC')
+            ->select(DB::raw('d.tel as device, d.created_at'))
+            ->orderBy('d.created_at', 'DESC')
             ->paginate(10);
 
         foreach ($articles as &$item) {
