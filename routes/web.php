@@ -58,4 +58,5 @@ Route::get('v1/charges/{id}/notify', 'HomeController@notify');
 Route::post('v1/charges/{id}/notify', 'HomeController@notify');
 
 
-Route::get('admin/articles', 'AdminController@index');
+Route::get('admin/articles', 'AdminController@articles');
+Route::get('admin/devices', 'AdminController@devices');
