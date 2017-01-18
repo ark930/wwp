@@ -34,18 +34,12 @@ class AdminController extends Controller
     {
         $this->isAdmin($request);
 
-        $articles = DB::table(DB::raw('devices as d'))
+        $devices = DB::table(DB::raw('devices as d'))
             ->select(DB::raw('d.tel as device, d.created_at'))
             ->orderBy('d.created_at', 'DESC')
             ->paginate(10);
 
-        foreach ($articles as &$item) {
-            $item->title = urldecode($item->title);
-            $item->link = route('article_read', $item->tag);
-            unset($item->tag);
-        }
-
-        return $articles;
+        return $devices;
     }
 
     protected function isAdmin(Request $request)
