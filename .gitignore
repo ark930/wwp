@@ -8,5 +8,3 @@ Homestead.yaml
 .env
 .env.testing
 .env.production
-apidoc
-apidoc.json
