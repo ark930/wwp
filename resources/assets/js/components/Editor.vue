@@ -22,8 +22,8 @@
                     </span><span class="channel">发布于 <a href="http://a-z.press" target="blank">A-Z.press</a></span>
                 </address>
                 <div class="actions">
-                    <button class="btn-publish btn-rounded" @click="toPublish">发布</button>
-                    <button class="btn-edit btn-rounded" @click="toEdit">编辑</button>
+                    <button class="btn-publish btn-rounded-primary" @click="toPublish">发布</button>
+                    <button class="btn-edit btn-rounded-ghost" @click="toEdit">更新</button>
                 </div>
             </div>
         </div>
