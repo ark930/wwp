@@ -16,10 +16,10 @@
                     {{ html_content }}
                 </article>
                 <address class="info fontLevel-s1">
-                    <span id="author" :contenteditable="editable" placeholder="作者（选填）" data_anonymous="匿名用户" class="author"
+                    <div id="author" :contenteditable="editable" placeholder="作者（选填）" data_anonymous="匿名用户" class="author"
                           @paste="pastePlantText" @keydown="changeAuthor">
                         {{ author }}
-                    </span><span class="channel">发布于&nbsp;<a href="https://a-z.press" target="blank">A-Z.press</a></span>
+                    </div><span class="channel">发布于&nbsp;<a href="https://a-z.press" target="blank">A-Z.press</a></span>
                 </address>
                 <div class="actions">
                     <button class="btn-publish btn-rounded-primary" @click="toPublish">{{ publishButtonText }}</button>
