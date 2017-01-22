@@ -19,11 +19,11 @@
                     <span id="author" :contenteditable="editable" placeholder="作者（选填）" data_anonymous="匿名用户" class="author"
                           @paste="pastePlantText" @keydown="changeAuthor">
                         {{ author }}
-                    </span><span class="channel">发布于 <a href="http://a-z.press" target="blank">A-Z.press</a></span>
+                    </span><span class="channel">发布于&nbsp;<a href="https://a-z.press" target="blank">A-Z.press</a></span>
                 </address>
                 <div class="actions">
-                    <button class="btn-publish btn-rounded-primary" @click="toPublish">发布</button>
-                    <button class="btn-edit btn-rounded-ghost" @click="toEdit">更新</button>
+                    <button class="btn-publish btn-rounded-primary" @click="toPublish">{{ publishButtonText }}</button>
+                    <button class="btn-edit btn-rounded-ghost" @click="toEdit">编辑</button>
                 </div>
             </div>
         </div>
@@ -82,6 +82,7 @@
             'mode'],
         data: function() {
             return {
+                publishButtonText: '发布',
                 editable: this.mode === 'author-edit',
                 titleEmptyError: false,
                 contentEmptyError: false,
@@ -196,6 +197,7 @@
                     this.myMode = 'author-edit';
                     this.editable = true;
                     this.isUpdate = true;
+                    this.publishButtonText = '更新';
                 }
             },
             changeTitle: function(e) {
