@@ -17,6 +17,7 @@ class CreateDevicesTable extends Migration
             $table->increments('id');
             $table->string('device_name')->unique()->nullable();
             $table->unsignedInteger('user_id')->nullable();
+            $table->boolean('is_admin')->default(false)->comment('是否是管理员');
             $table->timestamps();
             $table->softDeletes();
         });

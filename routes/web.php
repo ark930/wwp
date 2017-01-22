@@ -57,3 +57,4 @@ Route::post('a/{slug}', 'AzArticleController@editByTag');
 
 Route::get('admin/articles', 'AdminController@articles');
 Route::get('admin/devices', 'AdminController@devices');
+Route::get('admin/devices/{devices_id}/articles', 'AdminController@deviceArticles')->name('device_articles');

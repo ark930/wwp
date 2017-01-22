@@ -17,14 +17,14 @@ class AdminController extends Controller
         $articles = DB::table(DB::raw('articles as a'))
             ->join(DB::raw('article_versions as v'), 'a.publish_version_id', '=', 'v.id')
             ->join(DB::raw('devices as d'), 'a.device_id', '=', 'd.id')
-            ->select(DB::raw('v.title, a.tag, a.created_at, d.tel as device'))
+            ->select(DB::raw('v.title, a.slug, a.created_at, d.device_name as device'))
             ->orderBy('a.created_at', 'DESC')
             ->paginate(10);
 
         foreach ($articles as &$item) {
             $item->title = urldecode($item->title);
-            $item->link = route('article_read', $item->tag);
-            unset($item->tag);
+            $item->link = route('article_read', $item->slug);
+            unset($item->slug);
         }
 
         return $articles;
@@ -35,11 +35,37 @@ class AdminController extends Controller
         $this->isAdmin($request);
 
         $devices = DB::table(DB::raw('devices as d'))
-            ->select(DB::raw('d.tel as device, d.created_at'))
+            ->select(DB::raw('d.device_name as device, d.created_at, d.id as device_id'))
             ->orderBy('d.created_at', 'DESC')
             ->paginate(10);
 
+        foreach ($devices as &$item) {
+            $item->articles = route('device_articles', $item->device_id);
+            unset($item->device_id);
+        }
+
         return $devices;
+    }
+
+    public function deviceArticles(Request $request, $deviceId)
+    {
+        $this->isAdmin($request);
+
+        $articles = DB::table(DB::raw('articles as a'))
+            ->join(DB::raw('article_versions as v'), 'a.publish_version_id', '=', 'v.id')
+            ->join(DB::raw('devices as d'), 'a.device_id', '=', 'd.id')
+            ->select(DB::raw('v.title, a.slug, a.created_at, d.device_name as device_name'))
+            ->where('device_id', $deviceId)
+            ->orderBy('a.created_at', 'DESC')
+            ->paginate(10);
+
+        foreach ($articles as &$item) {
+            $item->title = urldecode($item->title);
+            $item->link = route('article_read', $item->slug);
+            unset($item->slug);
+        }
+
+        return $articles;
     }
 
     protected function isAdmin(Request $request)
