@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
+    <title>{{ urldecode($title) }}</title>
     <meta charset="UTF-8">
     <meta name="robots" content="index, follow, noarchive">
-    <title>{{ urldecode($title) }}</title>
     <meta name="description" content="{{ urldecode($description) }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/css/article.css">
+    {{--<link rel="stylesheet" href="/css/mypannel.css">--}}
 
     <script>
         window.Laravel = <?php echo json_encode([
@@ -31,6 +32,8 @@
     </script>
 </head>
 <body>
+    {{--<div id="icp"><a href="http://www.miitbeian.gov.cn/" target="blank" class="fontLevel-s3">沪ICP备17003085号-1</a></div>--}}
+
     <div id="app">
         <editor title="{{ $title }}"
                 author="{{ $author }}"

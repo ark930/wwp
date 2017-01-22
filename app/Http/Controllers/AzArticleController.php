@@ -81,7 +81,7 @@ class AzArticleController extends Controller
         $request->session()->put('device_id', $device['id']);
 
         $article = new Article();
-        $article['tag'] = $this->generateTag();
+        $article['slug'] = $this->generateTag();
         $article['status'] = Article::STATUS_PUBLISHED;
         $article['author'] = $author;
         $device->articles()->save($article);
@@ -95,7 +95,7 @@ class AzArticleController extends Controller
         $article->save();
 
         $data = $this->filterArticleData($article);
-        $data['show_url'] = $this->makeShowUrl($data['tag']);
+        $data['show_url'] = $this->makeShowUrl($data['slug']);
 
         return response()->json($data);
     }
@@ -167,7 +167,7 @@ class AzArticleController extends Controller
 
         $data = $this->filterArticleData($article);
         $data['mode'] = self::MODE_AUTHOR_READ;
-        $data['show_url'] = $this->makeShowUrl($data['tag']);
+        $data['show_url'] = $this->makeShowUrl($data['slug']);
 
         return response()->json($data);
     }
@@ -208,7 +208,7 @@ class AzArticleController extends Controller
 
     private function findArticleByTag($articleTag) : Article
     {
-        $article = Article::where('tag', $articleTag)
+        $article = Article::where('slug', $articleTag)
             ->first();
 
         if(empty($article)) {
@@ -233,7 +233,7 @@ class AzArticleController extends Controller
         }
 
         $data = [
-            'tag' => $article['tag'],
+            'slug' => $article['slug'],
             'author' => $article['author'],
 //            'cover_url' => $version['cover_url'],
             'title' => $version['title'],
@@ -263,12 +263,12 @@ class AzArticleController extends Controller
     {
         for($i = 0; $i < 5; $i++) {
             $tag = strtolower(str_random(8));
-            $article = Article::where('tag', $tag)->first();
+            $article = Article::where('slug', $tag)->first();
             if(empty($article)) {
                 return $tag;
             }
         }
 
-        throw new BadRequestException('TAG 生成失败');
+        throw new BadRequestException('Slug 生成失败');
     }
 }
