@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('username', 40)->unique()->nullable();
             $table->string('nickname', 40)->nullable();
             $table->string('avatar_url')->nullable();
+            $table->boolean('is_admin')->default(false)->comment('是否是管理员');
             $table->timestamp('first_login_at')->nullable();
             $table->timestamp('last_login_at')->nullable();
             $table->string('verify_code', 10)->nullable();

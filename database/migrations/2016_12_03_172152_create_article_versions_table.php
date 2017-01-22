@@ -15,10 +15,11 @@ class CreateArticleVersionsTable extends Migration
     {
         Schema::create('article_versions', function(Blueprint $table) {
             $table->increments('id');
-//            $table->unsignedInteger('article_id');
             $table->string('cover_url')->nullable();
             $table->text('title')->nullable();
-            $table->longText('content')->nullable();
+            $table->longText('html_content')->nullable();
+            $table->longText('text_content')->comment('纯文本的文章');
+            $table->text('description')->comment('文章简介');
             $table->timestamp('created_at');
         });
     }

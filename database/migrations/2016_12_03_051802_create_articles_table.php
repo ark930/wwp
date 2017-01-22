@@ -15,8 +15,9 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function(Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->char('tag', 10)->unique();
+            $table->unsignedInteger('device_id');
+            $table->unsignedInteger('reply_article_id')->nullable()->comment('回应的article_id');
+            $table->string('slug', 16)->unique();
             $table->text('author');
             $table->unsignedInteger('publish_version_id')->nullable();
             $table->unsignedInteger('draft_version_id')->nullable();
