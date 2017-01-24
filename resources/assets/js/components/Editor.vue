@@ -7,7 +7,7 @@
                 </address>
                 <h1 id="title" class="title fontLevel-h1" :class="titleError" :contenteditable="editable"
                     placeholder="标题" required="true" @focus="titleFocus" @paste="pastePlantText"
-                    @keydown="changeTitle">
+                    @keydown="changeTitle" @keyup="keyupContent">
                     {{ title }}
                 </h1>
                 <article id="content" class="body fontLevel-p" :class="contentError" :contenteditable="editable"
@@ -17,7 +17,7 @@
                 </article>
                 <address class="info fontLevel-s1">
                     <div id="author" :contenteditable="editable" placeholder="作者（选填）" data_anonymous="匿名用户" class="author"
-                          @paste="pastePlantText" @keydown="changeAuthor">
+                          @paste="pastePlantText" @keydown="changeAuthor" @keyup="keyupContent">
                         {{ author }}
                     </div><span class="channel">发布于&nbsp;<a href="https://a-z.press" target="blank">A-Z.press</a></span>
                 </address>
@@ -122,9 +122,9 @@
         },
         mounted() {
             if(this.myMode === 'author-edit') {
-                this.$el.querySelector('#title').innerHTML = '';
-                this.$el.querySelector('#author').innerHTML = '';
-                this.$el.querySelector('#content').innerHTML = '';
+                this.$el.querySelector('#title').innerHTML = localStorage.getItem('title') || '';
+                this.$el.querySelector('#author').innerHTML = localStorage.getItem('author') || '';
+                this.$el.querySelector('#content').innerHTML = localStorage.getItem('content') || '';
 //                let br = document.createElement('br');
 //                this.$el.querySelector('#content').appendChild(br);
             } else {
@@ -183,6 +183,9 @@
                         .then((response) => {
 //                            console.log('success', response);
                             const body = response.body;
+                            localStorage.removeItem('title');
+                            localStorage.removeItem('content');
+                            localStorage.removeItem('author');
                             location.replace(body.show_url);
                         }, (response) => {
 //                            console.log('error', response);
@@ -257,6 +260,12 @@
 //                    let br = document.createElement('br');
 //                    content.appendChild(br);
 //                }
+                console.log(e.target);
+                if(e.target.id == 'content') {
+                    localStorage.setItem(e.target.id, e.target.innerHTML);
+                } else {
+                    localStorage.setItem(e.target.id, e.target.innerText);
+                }
             },
             titleFocus: function() {
                 if(this.titleEmptyError) {
