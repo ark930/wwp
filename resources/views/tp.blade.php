@@ -15,6 +15,7 @@
         ]); ?>
     </script>
 
+    @if(env('APP_ENV') == 'production')
     <script type='text/javascript'>
         var _vds = _vds || [];
         window._vds = _vds;
@@ -30,6 +31,7 @@
             })();
         })();
     </script>
+    @endif
 </head>
 <body>
     {{--<div id="icp"><a href="http://www.miitbeian.gov.cn/" target="blank" class="fontLevel-s3">沪ICP备17003085号-1</a></div>--}}
