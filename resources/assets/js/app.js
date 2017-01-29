@@ -31,6 +31,44 @@ Vue.directive('demo', {
     }
 });
 
+Vue.directive('empty-error', {
+    inserted: function (el) {
+        el.addEventListener('focus', function(e) {
+            e.target.classList.remove('form-error');
+        });
+    },
+    update: function (el, binding) {
+        if (binding.value) {
+            el.classList.add('form-error');
+        }
+    }
+});
+
+Vue.directive('temp-save', {
+    inserted: function (el) {
+        el.addEventListener('keyup', function (e) {
+            if(e.target.id == 'content') {
+                localStorage.setItem(e.target.id, e.target.innerHTML);
+            } else {
+                localStorage.setItem(e.target.id, e.target.innerText);
+            }
+        });
+    }
+});
+
+Vue.directive('paste', {
+    inserted: function (el) {
+        el.addEventListener('paste', function (e) {
+            // only paste plain text to input field
+            e.preventDefault();
+            // get text representation of clipboard
+            let text = e.clipboardData.getData("text/plain");
+            // insert text manually
+            document.execCommand("insertHTML", false, text);
+        });
+    }
+});
+
 const app = new Vue({
     el: '#app'
 });

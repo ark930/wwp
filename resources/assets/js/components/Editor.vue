@@ -5,19 +5,17 @@
                 <address class="info fontLevel-s1">
                     <time class="publishDate">{{ publish_date }}</time><span class="readTime">阅读 {{ read_min }} 分钟</span>
                 </address>
-                <h1 id="title" class="title fontLevel-h1" :class="titleError" :contenteditable="editable"
-                    placeholder="标题" required="true" @focus="titleFocus" @paste="pastePlantText"
-                    @keydown="changeTitle" @keyup="keyupContent">
+                <h1 id="title" class="title fontLevel-h1" :contenteditable="editable" placeholder="标题" required="true"
+                    @keydown="changeTitle" v-empty-error="titleEmptyError" v-temp-save v-paste>
                     {{ title }}
                 </h1>
-                <article id="content" class="body fontLevel-p" :class="contentError" :contenteditable="editable"
-                         placeholder="正文" required='true' @focus="articleFocus" @paste="pastePlantText"
-                         @keydown="keydownContent" @keyup="keyupContent">
+                <article id="content" class="body fontLevel-p" :contenteditable="editable" placeholder="正文" required='true'
+                         @keydown="keydownContent" v-empty-error="contentEmptyError" v-temp-save v-paste>
                     {{ html_content }}
                 </article>
                 <address class="info fontLevel-s1">
                     <div id="author" :contenteditable="editable" placeholder="作者（选填）" data_anonymous="匿名用户" class="author"
-                          @paste="pastePlantText" @keydown="changeAuthor" @keyup="keyupContent">
+                         @keydown="changeAuthor" v-temp-save v-paste>
                         {{ author }}
                     </div><span class="channel">发布于&nbsp;<a href="https://a-z.press" target="blank">A-Z.press</a></span>
                 </address>
@@ -108,18 +106,6 @@
                 }, {title: "这写的什么啊", description: "马阿姨需要一个设计师"}]
             }
         },
-        computed: {
-            titleError: function () {
-                return {
-                    'form-error': this.titleEmptyError
-                }
-            },
-            contentError: function () {
-                return {
-                    'form-error': this.contentEmptyError
-                }
-            }
-        },
         mounted() {
             if(this.myMode === 'author-edit') {
                 this.$el.querySelector('#title').innerHTML = localStorage.getItem('title') || '';
@@ -152,6 +138,8 @@
                 }
             },
             toPublish: function() {
+                this.titleEmptyError = false;
+                this.contentEmptyError = false;
                 if(this.myMode === 'author-edit') {
                     if(_.isEmpty(this.$el.querySelector('#title').innerHTML)) {
                         this.titleEmptyError = true;
@@ -222,14 +210,6 @@
                     e.target.parentElement.previousElementSibling.focus();
                 }
             },
-            pastePlantText: function(e) {
-                // only paste plain text to input field
-                e.preventDefault();
-                // get text representation of clipboard
-                let text = e.clipboardData.getData("text/plain");
-                // insert text manually
-                document.execCommand("insertHTML", false, text);
-            },
             keydownContent: function(e) {
 //                console.log('key down');
 //                let code = e.keyCode || e.which;
@@ -251,31 +231,6 @@
 //                    content.appendChild(p);
 //                    this.putCursorAtEnd(content);
 //                }
-            },
-            keyupContent: function(e) {
-//                console.log('key up');
-//                let content = e.target;
-//                console.log(content, content.innerHTML);
-//                if(_.isEmpty(content.innerHTML)) {
-//                    let br = document.createElement('br');
-//                    content.appendChild(br);
-//                }
-                console.log(e.target);
-                if(e.target.id == 'content') {
-                    localStorage.setItem(e.target.id, e.target.innerHTML);
-                } else {
-                    localStorage.setItem(e.target.id, e.target.innerText);
-                }
-            },
-            titleFocus: function() {
-                if(this.titleEmptyError) {
-                    this.titleEmptyError = false;
-                }
-            },
-            articleFocus: function() {
-                if(this.contentEmptyError) {
-                    this.contentEmptyError = false;
-                }
             }
         }
     }
