@@ -15,4 +15,12 @@ class Device extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public static function createDevice()
+    {
+        $device = new Device();
+        $device->save();
+
+        return $device;
+    }
 }

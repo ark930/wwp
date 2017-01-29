@@ -39,6 +39,7 @@ class AzArticleController extends Controller
             'text_content' => 'required',
             'author' => 'nullable',
             'description' => 'nullable',
+            'reply_slug' => 'nullable',
         ]);
 
         $title = $request->input('title');
@@ -46,6 +47,7 @@ class AzArticleController extends Controller
         $textContent = $request->input('text_content');
         $author = $request->input('author');
         $description = $request->input('description');
+        $replySlug = $request->input('reply_slug');
 
         if(empty($author)) {
             $author = "";
@@ -54,36 +56,45 @@ class AzArticleController extends Controller
             $description = "";
         }
 
+
+        // 这篇文章是否是回应其他文章
+        if(!empty($replySlug)) {
+            $replayArticle = Article::where('slug', $replySlug)->first();
+            if(empty($replayArticle)) {
+                throw new BadRequestException('你要回应的文章不存在');
+            }
+        }
+
+        // 如果设备已存在，获取设备ID
+        if($request->session()->has('device_id')) {
+            $device = Device::find($request->session()->get('device_id'));
+        }
+
+        // 如果不存在，新建设备，并存入session
+        if(empty($device)) {
+            $device = Device::createDevice();
+
+            $deviceId = $device['id'];
+            $request->session()->put('device_id', $deviceId);
+        }
+
+        // 如果用户已登录，检测设备是否已与用户绑定。
         if(Auth::check()) {
             $user = Auth::user();
-            if(!empty($user->devices)) {
-                $device = $user->devices->first;
-                if(empty($device)) {
-                    $device = new Device();
-                    $device->save();
-                }
-            } else {
-                $device = new Device();
-                $device->save();
-            }
-        } else {
-            if($request->session()->has('device_id')) {
-                $device = Device::find($request->session()->get('device_id'));
-                if(empty($device)) {
-                    $device = new Device();
-                    $device->save();
-                }
-            } else {
-                $device = new Device();
+            $userDevice = $user->devices->where('user_id', $user['id'])->first();
+            if(empty($userDevice)) {
+                $device['user_id'] = $user['id'];
                 $device->save();
             }
         }
-        $request->session()->put('device_id', $device['id']);
 
         $article = new Article();
-        $article['slug'] = $this->generateTag();
+        $article['slug'] = $this->generateSlug();
         $article['status'] = Article::STATUS_PUBLISHED;
         $article['author'] = $author;
+        if(!empty($replayArticle)) {
+            $article['reply_article_id'] =  $replayArticle['id'];
+        }
         $device->articles()->save($article);
         $articleVersion = new ArticleVersion();
         $articleVersion['title'] = $title;
@@ -102,23 +113,18 @@ class AzArticleController extends Controller
 
     public function read(Request $request, $tag)
     {
-        $article = $this->findArticleByTag($tag);
+        $article = $this->findArticleBySlug($tag);
         $data = $this->filterArticleData($article);
 
         $data['mode'] = self::MODE_AUDIENCE_READ;
 
         if($request->session()->has('device_id')) {
             $device = Device::find($request->session()->get('device_id'));
-            $articleDevice = $article->device;
-            if($device['id'] === $articleDevice['id']) {
-                $data['mode'] = self::MODE_AUTHOR_READ;
-            }
-        } else if(Auth::check()) {
-            $user = Auth::user();
-            $device = $user->devices->first;
-            $articleDevice = $article->device;
-            if($device['id'] === $articleDevice['id']) {
-                $data['mode'] = self::MODE_AUTHOR_READ;
+            if(!empty($device)) {
+                $articleDevice = $article->device;
+                if($device['id'] === $articleDevice['id']) {
+                    $data['mode'] = self::MODE_AUTHOR_READ;
+                }
             }
         }
 
@@ -135,21 +141,10 @@ class AzArticleController extends Controller
             'description' => 'nullable',
         ]);
 
-        $article = $this->findArticleByTag($tag);
+        $article = $this->findArticleBySlug($tag);
 
         if($request->session()->has('device_id')) {
             $device = Device::find($request->session()->get('device_id'));
-            if (!empty($device)) {
-                $articleDevice = $article->device;
-                if($device['id'] !== $articleDevice['id']) {
-                    throw new AuthenticationException();
-                }
-            } else {
-                throw new AuthenticationException();
-            }
-        } else if(Auth::check()) {
-            $user = Auth::user();
-            $device = $user->devices->first;
             if (!empty($device)) {
                 $articleDevice = $article->device;
                 if($device['id'] !== $articleDevice['id']) {
@@ -170,6 +165,32 @@ class AzArticleController extends Controller
         $data['show_url'] = $this->makeShowUrl($data['slug']);
 
         return response()->json($data);
+    }
+
+    public function myArticles(Request $request)
+    {
+        $articles = [];
+        if(Auth::check()) {
+            $user = Auth::user();
+            $devices = $user->devices;
+            $articles = collect();
+            foreach ($devices as $device) {
+                $a = $device->articles;
+                $articles = $articles->merge($a);
+            }
+        } else if($request->session()->has('device_id')) {
+            $device = Device::find($request->session()->get('device_id'));
+            if(!empty($device)) {
+                $articles = $device->articles;
+            }
+        }
+
+        $data = [];
+        foreach ($articles as $article) {
+            $data[] = $this->filterArticleData($article);
+        }
+
+        return $data;
     }
 
     private function makeShowUrl($tag)
@@ -194,19 +215,19 @@ class AzArticleController extends Controller
         }
 
         $article['author'] = $author;
-        $articleVersion = new ArticleVersion();
+        $articleVersion = $article->publishedVersion;
         $articleVersion['title'] = $title;
         $articleVersion['html_content'] = $htmlContent;
         $articleVersion['text_content'] = $textContent;
         $articleVersion['description'] = $description;
         $articleVersion->save();
-        $article->publishedVersion()->associate($articleVersion);
-        $article->save();
+//        $article->publishedVersion()->associate($articleVersion);
+//        $article->save();
 
         return $article;
     }
 
-    private function findArticleByTag($articleTag) : Article
+    private function findArticleBySlug($articleTag) : Article
     {
         $article = Article::where('slug', $articleTag)
             ->first();
@@ -259,7 +280,7 @@ class AzArticleController extends Controller
         return ceil($count / 500);
     }
 
-    private function generateTag()
+    private function generateSlug()
     {
         for($i = 0; $i < 5; $i++) {
             $tag = strtolower(str_random(8));

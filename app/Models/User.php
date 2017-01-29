@@ -30,6 +30,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Article');
     }
 
+    public function devices()
+    {
+        return $this->hasMany('App\Models\Device');
+    }
+
     /**
      * 设置验证码
      */

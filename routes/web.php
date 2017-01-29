@@ -17,9 +17,9 @@
 //    });
 //
 //
-//    Route::post('login', 'Auth\LoginController@login')->name('login');
+    Route::post('login', 'Auth\LoginController@login')->name('login');
 //    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-//    Route::post('verifycode', 'UserController@verifyCode');
+    Route::post('verifycode', 'UserController@verifyCode');
 //
 ////    Route::group(['middleware' => ['auth']], function () {
 ////        Route::resource('articles', 'ArticleController');
@@ -44,6 +44,7 @@
 
 Route::get('/', 'AzArticleController@index');
 Route::post('articles', 'AzArticleController@publish');
+Route::get('articles', 'AzArticleController@myArticles');
 Route::get('a/{slug}', 'AzArticleController@read')->name('article_read');
 Route::post('a/{slug}', 'AzArticleController@editByTag');
 

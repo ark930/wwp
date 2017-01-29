@@ -23,8 +23,8 @@ class UserController extends Controller
         $this->validate($request, [
             'tel' => 'required|regex:/^1\d{10}$/',
         ], [
-//            'tel.required' => '请填写手机号',
-//            'tel.regex' => '请填写正确的手机号',
+            'tel.required' => '请填写手机号',
+            'tel.regex' => '请填写正确的手机号',
         ]);
 
         $tel = $request->input('tel');
