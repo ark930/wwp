@@ -52,34 +52,34 @@
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhr.send('tel=' + tel);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        countdown(120, document.getElementById('requireVerifyCode'));
-                    } else {
-                        errorHandler(xhr.responseText);
+                    if (xhr.readyState == 4) {
+                        if(xhr.status == 200 || xhr.status == 204) {
+                            countdown(120, document.getElementById('requireVerifyCode'));
+                        } else {
+                            errorHandler(xhr.responseText);
+                        }
                     }
                 };
             }
 
             function errorHandler(data) {
-                var res = JSON.parse(data.responseText);
-                console.log(res);
-                if (res.error) {
-                    alert(res.error);
+                var res = JSON.parse(data);
+                if (res.msg) {
+                    alert(res.msg);
                 }
             }
 
             function countdown(time, button) {
-                console.log(time);
                 if (time == 0) {
-                    button.attr("disabled", false);
-                    button.removeClass('btn_disable');
-                    button.addClass('btn_cta');
-                    button.text("获取");
+                    button.setAttribute("disabled", false);
+                    button.classList.remove('btn_disable');
+                    button.classList.add('btn_cta');
+                    button.innerText = '获取';
                 } else {
-                    button.attr("disabled", true);
-                    button.removeClass('btn_cta');
-                    button.addClass('btn_disable');
-                    button.text("重新发送(" + time + ")");
+                    button.setAttribute("disabled", true);
+                    button.classList.remove('btn_cta');
+                    button.classList.add('btn_disable');
+                    button.innerText = "重新发送(" + time + ")";
                     time--;
                     setTimeout(function () {
                         countdown(time, button)

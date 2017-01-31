@@ -17,9 +17,9 @@
         </thead>
             @foreach($articles as $article)
                 <tbody>
-                    <td>{{ $article['title'] }}</td>
-                    <td>{{ $article['author'] }}</td>
-                    <td>{{ $article['text_content'] }}</td>
+                    <td>{{ urldecode($article['title']) }}</td>
+                    <td>{{ urldecode($article['author']) }}</td>
+                    <td>{{ urldecode($article['text_content']) }}</td>
                     <td>{{ $article['read_time'] }}</td>
                     <td>{{ $article['created_at'] }}</td>
                 </tbody>
