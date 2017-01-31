@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
+use App\Models\Device;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -22,6 +23,16 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('login');
+    }
 
     /**
      * Handle a login request to the application.
@@ -118,6 +129,26 @@ class LoginController extends Controller
             $user->disableVerifyCode();
             $user->ifFirstLogin();
             $user->updateLastLogin();
+
+            // 如果设备已存在，获取设备ID
+            if($request->session()->has('device_id')) {
+                $device = Device::find($request->session()->get('device_id'));
+            }
+
+            // 如果不存在，新建设备，并存入session
+            if(empty($device)) {
+                $device = Device::createDevice();
+
+                $deviceId = $device['id'];
+                $request->session()->put('device_id', $deviceId);
+            }
+
+            // 如果用户已登录，检测设备是否已与用户绑定。
+            $userDevice = $user->devices->where('user_id', $user['id'])->first();
+            if(empty($userDevice)) {
+                $device['user_id'] = $user['id'];
+                $device->save();
+            }
         }
 
         return $ret;
@@ -156,6 +187,7 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        return response($this->guard()->user());
+//        return response($this->guard()->user());
+        return redirect('/');
     }
 }

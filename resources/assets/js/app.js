@@ -14,6 +14,7 @@ require('./bootstrap');
  */
 
 Vue.component('editor', require('./components/Editor.vue'));
+Vue.component('popup', require('./components/Popup.vue'));
 
 Vue.directive('empty-error', {
     inserted: function (el) {
@@ -21,7 +22,7 @@ Vue.directive('empty-error', {
             e.target.classList.remove('form-error');
         });
     },
-    update: function (el, binding) {
+    componentUpdated: function (el, binding) {
         if (binding.value) {
             el.classList.add('form-error');
         }

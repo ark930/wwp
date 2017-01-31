@@ -17,8 +17,9 @@
 //    });
 //
 //
+    Route::get('login', 'Auth\LoginController@showLoginForm');
     Route::post('login', 'Auth\LoginController@login')->name('login');
-//    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::post('verifycode', 'UserController@verifyCode');
 //
 ////    Route::group(['middleware' => ['auth']], function () {

@@ -36,6 +36,9 @@
 <body>
     {{--<div id="icp"><a href="http://www.miitbeian.gov.cn/" target="blank" class="fontLevel-s3">沪ICP备17003085号-1</a></div>--}}
 
+    @if(!Auth::check())
+        <a href="/login">登录</a>
+    @endif
     <div id="app">
         <editor title="{{ $title }}"
                 author="{{ $author }}"
