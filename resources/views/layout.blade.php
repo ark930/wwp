@@ -7,7 +7,7 @@
     <!-- Main Meta-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <link href="{{ asset('style/index.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet" media="screen">
     @yield('css')
 
     <script>
