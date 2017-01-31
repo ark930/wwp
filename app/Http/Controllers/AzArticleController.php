@@ -190,7 +190,10 @@ class AzArticleController extends Controller
             $data[] = $this->filterArticleData($article);
         }
 
-        return $data;
+//        return $data;
+        return view('my_articles', [
+            'articles' => $data
+        ]);
     }
 
     private function makeShowUrl($tag)
