@@ -144,8 +144,8 @@ class LoginController extends Controller
             }
 
             // 如果用户已登录，检测设备是否已与用户绑定。
-            $userDevice = $user->devices->where('user_id', $user['id'])->first();
-            if(empty($userDevice)) {
+            $deviceUser = $device->user;
+            if(empty($deviceUser) || $deviceUser['id'] != $user['id']) {
                 $device['user_id'] = $user['id'];
                 $device->save();
             }

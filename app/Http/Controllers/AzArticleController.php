@@ -78,16 +78,6 @@ class AzArticleController extends Controller
             $request->session()->put('device_id', $deviceId);
         }
 
-        // 如果用户已登录，检测设备是否已与用户绑定。
-        if(Auth::check()) {
-            $user = Auth::user();
-            $userDevice = $user->devices->where('user_id', $user['id'])->first();
-            if(empty($userDevice)) {
-                $device['user_id'] = $user['id'];
-                $device->save();
-            }
-        }
-
         $article = new Article();
         $article['slug'] = $this->generateSlug();
         $article['status'] = Article::STATUS_PUBLISHED;
